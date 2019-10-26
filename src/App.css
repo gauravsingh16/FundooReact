@@ -1,0 +1,58 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+}
+
+.header {
+  background-color: #282c34;
+  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #09d3ac;
+}
+
+.register-card
+{
+  align-items: center;
+  display: flex;
+  
+  flex-direction: column;
+}
+.input
+{
+  margin-bottom: px;
+}
+.register-button
+{
+  margin-top: 0px;
+}
+.login-card
+{
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+.forget-card
+{
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+
+}
+.appbar
+{
+  align-items: flex-start;
+  display: flex;
+  flex-direction: row;
+  height: 40px;
+}
