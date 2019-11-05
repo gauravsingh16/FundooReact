@@ -1,12 +1,18 @@
 import React, { Component } from 'react'
-import DashboradComponent from '../Components/DashboardComponent'
+import AppbarComponent from '../Components/AppbarComponent'
+import NotesComponent from '../Components/NotesComponent'
+import AllNotesComponent from '../Components/AllNotesComponent'
 export default class Dashboard extends Component {
     render() {
         return (
             <div>
               <header>
-                <DashboradComponent/>
+                <AppbarComponent/>
                   </header>  
+                  <body className="dashboard-body">
+                    <NotesComponent/>
+                    <AllNotesComponent/>
+                    </body>
             </div>
         )
     }

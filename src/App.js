@@ -7,6 +7,7 @@ import React,{Component} from 'react'
 import Register from './Pages/Register';
 import ResetPasswordComponent from './Components/ResetPasswordComponent'
 import Dashboard from './Pages/Dashboard'
+import DeletePage from './Pages/DeletePage'
 
 
 class App extends Component{
@@ -20,6 +21,7 @@ class App extends Component{
       <Route path="/forgetpassword" exact component={ForgetPasswordComponent}></Route>
       <Route path="/changepassword/:id" exact component={ResetPasswordComponent}></Route>
       <Route path="/dashboard" exact component={Dashboard}></Route>
+      <Route path="/trash" exact component={DeletePage}></Route>
       </Router>
     
     )

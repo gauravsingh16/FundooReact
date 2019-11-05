@@ -49,10 +49,86 @@
   flex-direction: column;
 
 }
-.appbar
+
+.app-bar
+{
+ display: flex;
+ background-color: #202124;
+ align-items: center;
+  padding-left: 20px;
+  height: 60px;
+}
+.keep
+{
+  padding-left: 10px;
+  height: px;
+  padding-right: 80px;
+}
+.search
 {
   align-items: flex-start;
   display: flex;
   flex-direction: row;
-  height: 40px;
+  width: 650px;
+  border-radius: 10px;
+  background-color: #333 ;
+}
+.refresh
+{
+  padding-left: 45px;
+}
+.label-name
+{
+padding-right: 90px;
+}
+.dialog-label
+{
+display: flex;
+align-items: center;  
+}
+.note-create
+{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding-top: 50px;
+}
+.dashboard-body
+{
+  /* display: flex;
+  flex-wrap:wrap; */
+
+  background-color: #202124;
+}
+.notecard
+{
+  width: 500px;
+  height: 48px;
+  border-radius: 5px;
+}
+.close-button
+{
+  display: flex;
+  float: right;
+}
+.note-take
+{
+  width: 200px;
+}
+.note-display
+{
+  flex-direction: row;
+  flex-wrap:wrap; 
+  
+  margin:0 10px 10px 60px;
+  width: 250px;
+}
+.note-design
+{
+  display: flex;
+  flex-direction: row;
+  flex-wrap:wrap;
+  
+  padding-left: 250px;
+  padding-top: 50px;
 }
