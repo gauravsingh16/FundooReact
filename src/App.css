@@ -128,7 +128,22 @@ align-items: center;
   display: flex;
   flex-direction: row;
   flex-wrap:wrap;
-  
+  background-color: #202124;
+
   padding-left: 250px;
   padding-top: 50px;
+}
+.edit-label-div{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 3% 0% 3% 0%;
+}
+.labelsinnote
+{
+  display: flex;
+  flex-direction: row;
+  flex-wrap:wrap;
+  background-color: #333 ;
+
 }

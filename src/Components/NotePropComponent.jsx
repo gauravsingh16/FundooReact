@@ -9,9 +9,12 @@ import RedoIcon from '@material-ui/icons/Redo';
 import UndoIcon from '@material-ui/icons/Undo';
 import Popper from '@material-ui/core/Popper';
 import MenuItem from '@material-ui/core/MenuItem';
-import { trashNotes } from '../Controller/NoteService';
+import { trashNotes, archiveNote } from '../Controller/NoteService';
+import { withRouter } from 'react-router-dom';
+import AddNoteLabelComponent from './AddNoteLabelComponent';
+import { keys } from '@material-ui/core/styles/createBreakpoints';
 
-export default class NotePropComponent extends Component {
+ class NotePropComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -21,10 +24,11 @@ export default class NotePropComponent extends Component {
             desc: '',
             notes: [],
             openDialog: false,
-            anchorEl: null,
+            anchorEl: false,
             closepaper: false,
             labelmenu:false,
-            archive:false
+            archive:false,
+            noteId:this.props.noteId
         }
 
     }
@@ -39,7 +43,7 @@ export default class NotePropComponent extends Component {
         })
     }
     handleMoreOpen = (e) => {
-        console.log(this.props.noteId)
+        // console.log(this.props.noteId)
         this.setState({
             anchorEl: this.state.anchorEl ? !this.state.anchorEl : e.target
         })
@@ -50,11 +54,20 @@ export default class NotePropComponent extends Component {
         trashNotes(this.props.noteId).then((response)=>
         {
             console.log(response)
+            
         })
     }
     handleLabel=()=>
     {
-
+        this.props.history.push('/addnotelabel')
+    }
+    handleArchive=()=>
+    {
+        archiveNote(this.props.noteId).then((response)=>
+        {
+            console.log(response)
+        }
+        )
     }
 
     render() {
@@ -64,6 +77,7 @@ export default class NotePropComponent extends Component {
                 <IconButton title="reminder">
                     <AddAlertIcon onClick={(e) => this.handleMoreOpen(e)} onClickAway={this.closePaper}/>
                 </IconButton>
+                
                 <Popper  open={this.state.anchorEl} anchorEl={this.state.anchorEl}>
                 <Paper>
                     <span>Reminder:</span>
@@ -85,7 +99,7 @@ export default class NotePropComponent extends Component {
                     <Paper>
 
                         <MenuItem onClick={this.handleDelete}>Delete</MenuItem>
-                        <MenuItem onClick={this.handleLabel}>Add Labels</MenuItem>
+                        <AddNoteLabelComponent noteId={this.props.noteId}/>
                     </Paper>
                 </Popper>
                 <IconButton>
@@ -99,3 +113,4 @@ export default class NotePropComponent extends Component {
         )
     }
 }
+export default  withRouter(NotePropComponent)

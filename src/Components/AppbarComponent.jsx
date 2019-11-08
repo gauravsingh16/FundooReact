@@ -9,7 +9,6 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import ViewStreamIcon from '@material-ui/icons/ViewStream';
 import AppsIcon from '@material-ui/icons/Apps';
 import SideNavComponent from './SideNavComponent';
-import NotesComponent from './NotesComponent';
 
 export default class AppbarComponent extends Component {
     constructor(props) {
@@ -45,8 +44,7 @@ export default class AppbarComponent extends Component {
                         <IconButton onClick={this.handleDrawerOpen}>
                             <MenuIcon />
                         </IconButton>
-                        <AppbarComponent history={this.props.history}/>
-
+                       
                         <SideNavComponent menubar={this.state.drawerOpen} />
                         <img src={require('../../src/bulb-icon.png')}
                             width="45px" height="45px" />

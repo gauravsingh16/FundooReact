@@ -29,3 +29,21 @@ export  function addNoteLabel(id) {
         return Axios.post(user_api_base_url+'note/deletenote?id='+id,{headers:headers});
     
 } 
+export  function getTrashNote() {
+        
+        return Axios.get(user_api_base_url+'note/gettrashnotes',{headers:headers});
+    
+} 
+export  function deleteNote(id) {
+        console.log(id);
+        return Axios.delete(user_api_base_url+'note/deletenote?id='+id,{headers:headers});
+    
+} 
+export  function archiveNote(id) {
+        console.log(id);
+        return Axios.put(user_api_base_url+'note/archivednotes?id='+id,null,{headers:headers});
+    
+} export  function getArchiveNote() {
+        return Axios.get(user_api_base_url+'note/getarchivednotes',{headers:headers});
+    
+} 

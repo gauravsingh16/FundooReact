@@ -1,17 +1,18 @@
 import React, { Component } from 'react'
-import { Drawer, MenuList, MenuItem, Divider, Button, TextField, Dialog, Card, CardContent, IconButton } from '@material-ui/core'
+import { Drawer, MenuList, MenuItem, Divider, TextField, Dialog, Card, CardContent, IconButton,Button } from '@material-ui/core'
 import EmojiObjectsOutlinedIcon from '@material-ui/icons/EmojiObjectsOutlined';
 import AddAlertOutlinedIcon from '@material-ui/icons/AddAlertOutlined'
 import ArchiveOutlinedIcon from '@material-ui/icons/ArchiveOutlined'
 import DeleteOutlineOutlinedIcon from '@material-ui/icons/DeleteOutlineOutlined'
 import LabelOutlinedIcon from '@material-ui/icons/LabelOutlined'
 import CreateIcon from '@material-ui/icons/Create'
-import DialogContent from '@material-ui/core/DialogContent';
-import getAllLabels, { createlabel, getdeletednotes } from '../Controller/labelservice';
+import getAllLabels, { createlabel } from '../Controller/labelservice';
 import ClearOutlinedIcon from '@material-ui/icons/ClearOutlined'
 import DoneOutlinedIcon from '@material-ui/icons/DoneOutline'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import { Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
+import EditLabelComponent from './EditLabelComponent';
+import LabelNotesComponent from './LabelNotesComponent';
 
 const themes = createMuiTheme({
     overrides: {
@@ -25,7 +26,7 @@ const themes = createMuiTheme({
         }
     }
 })
-export default class SideNavComponent extends Component {
+ class SideNavComponent extends Component {
 
     constructor(props) {
         super(props)
@@ -47,7 +48,7 @@ export default class SideNavComponent extends Component {
         })
     }
     getLabels = () => {
-        getAllLabels().then((response) => {
+     getAllLabels().then((response) => {
             console.log('data', response.data);
             this.setState({
                 labels: response.data.object
@@ -74,50 +75,46 @@ export default class SideNavComponent extends Component {
             })
         }
     }
-    getTrashNotes = () => {
-        getdeletednotes().then((res) => {
-            console.log(res.data)
-            this.trashNotes = res.data
-        })
-    }
+ 
     handleDelete = () => {
         console.log("trash");
        this.props.history.push('/trash'); 
+    }
+    handlenotes=()=>{
+        this.props.history.push('/dashboard')
+    }
+    handleArchive=()=>{
+        this.props.history.push('/archive')
+    }
+    handleClickClose=()=>{
+        this.setState({
+            labelDialog:!this.state.labelDialog
+        })
+        this.getLabels();
+    }
+    handlelabel=(data)=>{
+        this.props.history.push('/label/'+data)
     }
 
     render() {
         let showLabels = this.state.labels.map((data) => {
 
             return (
-                <MenuItem key={data.labelsId}>
+                <MenuItem key={data.labelsId} onClick={()=>{this.handlelabel(data.labelsId)}}>
 
                     <LabelOutlinedIcon style={{ paddingRight: "10px" }} />{data.name}
 
                 </MenuItem>
             )
         })
-        let showLabelsinDialog = this.state.labels.map((data) => {
-            console.log(data.name)
-            return (
-
-                <DialogContent key={data.labelId} className="dialog-label" style={{ paddingLeft: "2px" }}>
-                    <IconButton>
-                        <LabelOutlinedIcon />
-                    </IconButton>
-                    <span className="label-name">{data.name}</span>
-                    <IconButton>< CreateIcon />
-                    </IconButton>
-                </DialogContent>
-
-            )
-        })
+     
 
         return (
             <div>
                 <MuiThemeProvider theme={themes}>
                     <Drawer variant='persistent' overflow='auto' open={this.props.menubar}>
                         <MenuList>
-                            <MenuItem>
+                            <MenuItem onClick={this.handlenotes}>
                                 <EmojiObjectsOutlinedIcon />
                                 <span>Notes</span>
 
@@ -132,6 +129,7 @@ export default class SideNavComponent extends Component {
                             <span>Labels</span>
                             <div>
                                 {showLabels}
+                                
                             </div>
                             <MenuItem onClick={this.dialogOpen}>
                                 <CreateIcon style={{ paddingRight: "10px" }} />Edit labels
@@ -140,8 +138,8 @@ export default class SideNavComponent extends Component {
                             <Dialog open={this.state.labelDialog} >
                                 <Card style={{ width: "360px" }}>
                                     <CardContent>
-                                        <IconButton>
-                                            <ClearOutlinedIcon />
+                                        <IconButton >
+                                            <ClearOutlinedIcon  />
                                         </IconButton>
                                         <TextField
                                             type="text"
@@ -149,15 +147,17 @@ export default class SideNavComponent extends Component {
                                             multiline
                                             onChange={this.labelNameChange}
                                         />
-                                        <IconButton>
+                                        <IconButton style={{display:"flex",float:"right"}}>
                                             <DoneOutlinedIcon onClick={this.createLabel} />
                                         </IconButton>
-                                        {showLabelsinDialog}
+                                        <EditLabelComponent/>
+                                        <Divider/>
+                                        <Button className="close-button" onClick={this.handleClickClose}>Close</Button>
                                     </CardContent>
 
                                 </Card>
                             </Dialog>
-                            <MenuItem>
+                            <MenuItem onClick={this.handleArchive}>
                                 <ArchiveOutlinedIcon />
                                 <span>Archived Notes</span>
                             </MenuItem>
@@ -176,3 +176,4 @@ export default class SideNavComponent extends Component {
         )
     }
 }
+export default withRouter(SideNavComponent)

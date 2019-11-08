@@ -1,12 +1,11 @@
 import React, { Component } from 'react'
-import { Card, CardContent, TextField, CardActions, Button, Dialog,Chip } from '@material-ui/core'
-import { getAllNotes, updateNotes } from '../Controller/NoteService';
-import NotePropComponent from './NotePropComponent';
-import { removelabelnote } from '../Controller/labelservice';
+import { Card, CardContent, TextField, CardActions, Button,Dialog } from '@material-ui/core'
+import NotePropComponent from './NotePropComponent'
+import { getArchiveNote, updateNotes } from '../Controller/NoteService'
 
-export default class AllNotesComponent extends Component {
+export default class ArchiveComponent extends Component {
     constructor(props) {
-        super(props);
+        super(props)
         this.state = {
             menuItem: false,
             id: '',
@@ -21,7 +20,7 @@ export default class AllNotesComponent extends Component {
         this.getNotes();
     }
     getNotes = () => {
-        getAllNotes().then((res) => {
+        getArchiveNote().then((res) => {
             console.log("in getNotes ", res.data);
             this.setState({
                 notes: res.data.object,
@@ -66,20 +65,13 @@ export default class AllNotesComponent extends Component {
             })
             updateNotes(editedNote, this.state.id).then((res) => {
                 console.log(res.data);
-                this.getNotes();
             })
         }
     }
-    handleLabelDelete=(labels,noteId)=>{
-        removelabelnote(labels.labelId,noteId).then((response)=>{
-            console.log(response)
-            this.getNotes();
-        })
-    }
     render() {
-        let getAllNotes = this.state.notes.map((keys) => {
+        let getArchiveNotes = this.state.notes.map((keys) => {
             return (
-                < div key={keys.id}   >
+                <div key={keys.id}>
                     < Card key={keys.id} className="note-display" >
                         <div onClick={() => { this.handleClickTakeNote(keys) }} >
                             <CardContent>
@@ -88,24 +80,10 @@ export default class AllNotesComponent extends Component {
                             <CardContent>
                                 {keys.desc}
                             </CardContent>
-                            <div className="labelsinnote">
-                            {keys.label.map((labels) => {
-                                return (
-                                    <div key={labels.labelId}> {labels === '' ? null :
-                                        <Chip className="labelsinnote" label={labels.name} variant="outlined"
-                                            onDelete={()=>{this.handleLabelDelete(labels,keys.noteId)}}
-                                        />
-                                    }
-                                    </div>
-                                )
-
-                            })}
                         </div>
-                        </div>
-                        
-                        <CardActions  >
-
-                            <NotePropComponent noteId={keys.id} />
+                        <CardActions>
+                            
+                            <NotePropComponent noteId={keys.id}/>
                         </CardActions>
 
                     </Card >
@@ -118,6 +96,7 @@ export default class AllNotesComponent extends Component {
                                     multiline
                                     value={this.state.title}
                                     onChange={this.handleTitleChange}
+
                                 /></CardContent>
                             <CardContent>
                                 <TextField
@@ -125,10 +104,11 @@ export default class AllNotesComponent extends Component {
                                     multiline
                                     value={this.state.desc}
                                     onChange={this.handleDescription}
+
                                 /></CardContent>
                             <CardActions>
-
-                                <NotePropComponent noteId={keys.id} />
+                            
+                                <NotePropComponent noteId={keys.id}/>
                                 <Button className="button-close" onClick={this.closeDialog}>Close</Button>
 
                             </CardActions>
@@ -139,8 +119,10 @@ export default class AllNotesComponent extends Component {
         })
         return (
             <div className="note-design">
-                {getAllNotes}
+                {getArchiveNotes}
             </div>
         )
     }
 }
+    
+

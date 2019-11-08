@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { Card, InputBase, Button,IconButton } from '@material-ui/core';
-import { withRouter } from 'react-router-dom';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import createNote from '../Controller/NoteService';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
