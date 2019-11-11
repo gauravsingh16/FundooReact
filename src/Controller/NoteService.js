@@ -47,3 +47,22 @@ export  function archiveNote(id) {
         return Axios.get(user_api_base_url+'note/getarchivednotes',{headers:headers});
     
 } 
+export  function doReminderNote(id,data) {
+        var date1=new Date(data.reminder);
+        let data2=date1.toISOString();
+console.log(data        )
+        return Axios.post(user_api_base_url+'note/doreminder?id='+id,data,{headers:headers});
+    
+} 
+export function removeReminder(id){
+        console.log(id)
+        return Axios.delete(user_api_base_url+'note/removereminder?id='+id,{headers:headers});
+    }
+    export function getReminderNotes(){
+        return Axios.get(user_api_base_url+'note/getremindernotes',{headers:headers});
+    }
+    export function changeColor(data,id){
+            console.log(id);
+            console.log(data)
+        return Axios.put(user_api_base_url+'note/changecolor?id='+id,data,{headers:headers});
+    }

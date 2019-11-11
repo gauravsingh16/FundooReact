@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Card, CardContent, TextField, CardActions, Button, Dialog,Chip } from '@material-ui/core'
-import { getAllNotes, updateNotes } from '../Controller/NoteService';
+import { getAllNotes, updateNotes, removeReminder } from '../Controller/NoteService';
 import NotePropComponent from './NotePropComponent';
 import { removelabelnote } from '../Controller/labelservice';
 
@@ -66,7 +66,7 @@ export default class AllNotesComponent extends Component {
             })
             updateNotes(editedNote, this.state.id).then((res) => {
                 console.log(res.data);
-                this.getNotes();
+                
             })
         }
     }
@@ -76,11 +76,17 @@ export default class AllNotesComponent extends Component {
             this.getNotes();
         })
     }
+    handleReminderDelete=(noteId)=>{
+        removeReminder(noteId).then((response)=>{
+            console.log(response);
+            this.getNotes();
+        })
+    }
     render() {
         let getAllNotes = this.state.notes.map((keys) => {
             return (
                 < div key={keys.id}   >
-                    < Card key={keys.id} className="note-display" >
+                    < Card key={keys.id} className="note-display" style={{backgroundColor:keys.color}} >
                         <div onClick={() => { this.handleClickTakeNote(keys) }} >
                             <CardContent>
                                 {keys.title}
@@ -88,7 +94,7 @@ export default class AllNotesComponent extends Component {
                             <CardContent>
                                 {keys.desc}
                             </CardContent>
-                            <div className="labelsinnote">
+                            <div >
                             {keys.label.map((labels) => {
                                 return (
                                     <div key={labels.labelId}> {labels === '' ? null :
@@ -101,9 +107,19 @@ export default class AllNotesComponent extends Component {
 
                             })}
                         </div>
+                       <div>                     
+                                    <div key={keys.reminder}>  {keys.reminder === null ? null :
+                                        <Chip className="labelsinnote" label={keys.reminder} variant="outlined"
+                                            onDelete={()=>{this.handleReminderDelete(keys.noteId)}}
+                                        />
+                                      }
+                                    </div>
+                               
+                            
+                        </div>
                         </div>
                         
-                        <CardActions  >
+                        <CardActions >
 
                             <NotePropComponent noteId={keys.id} />
                         </CardActions>

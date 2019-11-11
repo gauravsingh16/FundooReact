@@ -30,3 +30,8 @@ export function removelabelnote(labelId,noteid){
     console.log(noteid)
     return Axios.post(user_api_base_url+'label/removenotelabel?labelid='+labelId+'&noteid='+noteid,null,{headers:headers});
 }
+
+export function deleteLabel(labelid){
+    console.log(labelid);
+    return Axios.delete(user_api_base_url+'label/deletelabel?labelid='+labelid,{headers:headers});
+}

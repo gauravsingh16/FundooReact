@@ -147,3 +147,15 @@ align-items: center;
   background-color: #333 ;
 
 }
+.color-map {
+  width: 30px;
+  height: 30px;
+  margin: 5px;
+}
+.color-styles {
+  width: 160px;
+  height: auto;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}

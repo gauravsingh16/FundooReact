@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
-import { Card, CardContent, TextField, CardActions, Button,Dialog,Chip } from '@material-ui/core'
-import NotePropComponent from './NotePropComponent'
-import { getArchiveNote, updateNotes } from '../Controller/NoteService'
-
-export default class ArchiveComponent extends Component {
+import { Card, CardContent, TextField, CardActions, Button, Dialog, Chip } from '@material-ui/core'
+import { getAllNotes, updateNotes, removeReminder, getReminderNotes } from '../Controller/NoteService';
+import NotePropComponent from './NotePropComponent';
+import { removelabelnote } from '../Controller/labelservice';
+export default class ReminderNoteComponent extends Component {
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
             menuItem: false,
             id: '',
@@ -20,7 +20,7 @@ export default class ArchiveComponent extends Component {
         this.getNotes();
     }
     getNotes = () => {
-        getArchiveNote().then((res) => {
+        getReminderNotes().then((res) => {
             console.log("in getNotes ", res.data);
             this.setState({
                 notes: res.data.object,
@@ -65,14 +65,28 @@ export default class ArchiveComponent extends Component {
             })
             updateNotes(editedNote, this.state.id).then((res) => {
                 console.log(res.data);
+                this.getNotes();
             })
         }
     }
+    handleLabelDelete = (labels, noteId) => {
+        removelabelnote(labels.labelId, noteId).then((response) => {
+            console.log(response)
+            this.getNotes();
+        })
+    }
+    handleReminderDelete = (noteId) => {
+        removeReminder(noteId).then((response) => {
+            console.log(response);
+            this.getNotes();
+        })
+    }
     render() {
-        let getArchiveNotes = this.state.notes.map((keys) => {
+        let getAllReminderNotes = this.state.notes.map((keys) => {
             return (
-                <div key={keys.id}>
-                    < Card key={keys.id} className="note-display" >
+
+                < div key={keys.id}>
+                    < Card key={keys.id}  style={{backgroundColor:keys.color}} className="note-display" >
                         <div onClick={() => { this.handleClickTakeNote(keys) }} >
                             <CardContent>
                                 {keys.title}
@@ -80,38 +94,39 @@ export default class ArchiveComponent extends Component {
                             <CardContent>
                                 {keys.desc}
                             </CardContent>
-                        </div>
-                        <div >
-                            {keys.label.map((labels) => {
-                                return (
-                                    <div key={labels.labelId}> {labels === '' ? null :
-                                        <Chip className="labelsinnote" label={labels.name} variant="outlined"
-                                            onDelete={()=>{this.handleLabelDelete(labels,keys.noteId)}}
-                                        />
-                                    }
-                                    </div>
-                                )
+                            <div className="labelsinnote">
+                                {keys.label.map((labels) => {
+                                    return (
+                                        <div key={labels.labelId}> {labels === '' ? ' ' :
+                                            <Chip className="labelsinnote" label={labels.name} variant="outlined"
+                                                onDelete={() => { this.handleLabelDelete(labels, keys.noteId) }}
+                                            />
+                                        }
+                                        </div>
+                                    )
 
-                            })}
+                                })}
+                            </div>
+                            <div>
+                                <div key={keys.reminder}>  {keys.reminder === null ? null :
+                                    <Chip className="labelsinnote" label={keys.reminder} variant="outlined"
+                                        onDelete={() => { this.handleReminderDelete(keys.noteId) }}
+                                    />
+                                }
+                                </div>
+
+
+                            </div>
                         </div>
-                       <div>                     
-                                    <div key={keys.reminder}>  {keys.reminder === null ? null :
-                                        <Chip className="labelsinnote" label={keys.reminder} variant="outlined"
-                                            onDelete={()=>{this.handleReminderDelete(keys.noteId)}}
-                                        />
-                                      }
-                                    </div>
-                               
-                            
-                        </div>
-                        <CardActions>
-                            
-                            <NotePropComponent noteId={keys.id}/>
+
+                        <CardActions  >
+
+                            <NotePropComponent noteId={keys.id} />
                         </CardActions>
 
                     </Card >
                     <Dialog open={this.state.openDialog} >
-                        < Card className="note-dialog" style={{ boxShadow: "1px 1px 1px 1px" }
+                        < Card className="note-dialog" style={{ backgroundColor:keys.color,boxShadow: "1px 1px 1px 1px" }
                         } >
                             <CardContent>
                                 <TextField style={{ width: "100%" }}
@@ -119,7 +134,6 @@ export default class ArchiveComponent extends Component {
                                     multiline
                                     value={this.state.title}
                                     onChange={this.handleTitleChange}
-
                                 /></CardContent>
                             <CardContent>
                                 <TextField
@@ -127,25 +141,23 @@ export default class ArchiveComponent extends Component {
                                     multiline
                                     value={this.state.desc}
                                     onChange={this.handleDescription}
-
                                 /></CardContent>
                             <CardActions>
-                            
-                                <NotePropComponent noteId={keys.id}/>
+
+                                <NotePropComponent noteId={keys.id} />
                                 <Button className="button-close" onClick={this.closeDialog}>Close</Button>
 
                             </CardActions>
                         </Card >
                     </Dialog>
-                </div >
+                </div>
             )
+
         })
         return (
-            <div className="note-design">
-                {getArchiveNotes}
+            <div  className="note-display" >
+                {getAllReminderNotes}
             </div>
         )
     }
 }
-    
-

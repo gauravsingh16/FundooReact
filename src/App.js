@@ -12,7 +12,8 @@ import DeletePage from './Pages/DeletePage'
 import ArchivePage from './Pages/ArchivePage'
 import AddNoteLabelComponent from './Components/AddNoteLabelComponent'
 import LabelPage from './Pages/LabelPage'
-
+import LabelNotesComponent from  './Components/LabelNotesComponent'
+import ReminderPage from './Pages/ReminderPage'
 
 class App extends Component{
   render(){
@@ -30,6 +31,7 @@ class App extends Component{
       <Route path="/archive" exact component={ArchivePage}></Route>
       <Route path="/addnotelabel" exact component={AddNoteLabelComponent}/>
       <Route path="/label/:labelid" exact component={LabelPage}/>
+      <Route path="/reminder" exact component={ReminderPage}/>
       </Router>
     
     )

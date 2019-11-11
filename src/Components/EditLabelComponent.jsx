@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { DialogContent, TextField, IconButton, InputBase } from '@material-ui/core'
 
-import getAllLabels, { updateLabel } from '../Controller/labelservice'
+import getAllLabels, { updateLabel, deleteLabel } from '../Controller/labelservice'
 import DeleteIcon from '@material-ui/icons/Delete'
 import CreateOutlinedIcon from '@material-ui/icons/CreateOutlined'
 export default class EditLabelComponent extends Component {
@@ -62,6 +62,11 @@ console.log(this.state.name);
 
         this.setState({ name:name })
     }
+    handleDeleteLabel=(event)=>{
+        deleteLabel(event).then((response)=>{
+            console.log(response)
+        })
+    }
     render() {
         let showLabelsinDialog = this.state.labels.map((key) => {
             console.log(key.name)
@@ -70,7 +75,7 @@ console.log(this.state.name);
                 >
                     <div>
                         <IconButton>
-                        <DeleteIcon onClick={() => this.handleDeleteLabel(key)} />
+                        <DeleteIcon onClick={() => this.handleDeleteLabel(key.labelId)} />
                         </IconButton>
                     </div>
                     <div  onMouseEnter={() => this.handleMouseOver(key.labelId,key.name)}>

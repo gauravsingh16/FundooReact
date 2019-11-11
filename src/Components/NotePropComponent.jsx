@@ -13,6 +13,8 @@ import { trashNotes, archiveNote } from '../Controller/NoteService';
 import { withRouter } from 'react-router-dom';
 import AddNoteLabelComponent from './AddNoteLabelComponent';
 import { keys } from '@material-ui/core/styles/createBreakpoints';
+import EditReminderComponent from './EditReminderComponent';
+import ColorChangeComponent from './ColorChangeComponent';
 
  class NotePropComponent extends Component {
     constructor(props) {
@@ -74,26 +76,27 @@ import { keys } from '@material-ui/core/styles/createBreakpoints';
         return (
             <div>
 
-                <IconButton title="reminder">
-                    <AddAlertIcon onClick={(e) => this.handleMoreOpen(e)} onClickAway={this.closePaper}/>
+                <IconButton >
+                    <EditReminderComponent noteId={this.props.noteId}/>
                 </IconButton>
                 
-                <Popper  open={this.state.anchorEl} anchorEl={this.state.anchorEl}>
+                <Popper  >
                 <Paper>
-                    <span>Reminder:</span>
+                    
                     </Paper>
                     </Popper>
                 <IconButton>
                     <PersonAddIcon />
                 </IconButton>
-                <IconButton>
-                    <PaletteIcon />
+              
+                   <IconButton>
+                   <ColorChangeComponent noteId={this.props.noteId}/>
                 </IconButton>
                 <IconButton>
                     <ArchiveIcon onClick={this.handleArchive} />
                 </IconButton>
                 <IconButton title="more" >
-                    <MoreVertIcon onClick={(e) => this.handleMoreOpen(e)} onClickAway={this.closePaper} />
+                    <MoreVertIcon onClick={(e) => this.handleMoreOpen(e)} />
                 </IconButton>
                 <Popper open={this.state.anchorEl} anchorEl={this.state.anchorEl}>
                     <Paper>
@@ -102,12 +105,7 @@ import { keys } from '@material-ui/core/styles/createBreakpoints';
                         <AddNoteLabelComponent noteId={this.props.noteId}/>
                     </Paper>
                 </Popper>
-                <IconButton>
-                    <RedoIcon />
-                </IconButton>
-                <IconButton>
-                    <UndoIcon />
-                </IconButton>
+                
 
             </div>
         )

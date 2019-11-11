@@ -1,75 +1,113 @@
 import React, { Component } from 'react'
-import { Card, CardContent, TextField, CardActions, Button, Dialog,Chip } from '@material-ui/core'
+import { Card, CardContent, TextField, CardActions, Button, Dialog, Chip } from '@material-ui/core'
 import NotePropComponent from './NotePropComponent';
+import { getAllNotes, updateNotes } from '../Controller/NoteService';
+import { removelabelnote } from '../Controller/labelservice';
 
 
 export default class LabelNotesComponent extends Component {
     constructor(props) {
         super(props);
-        this.setState({
+        this.state = {
+            menuItem: false,
+            id: '',
+            title: '',
+            desc: '',
             notes: [],
-            labels: []
+            labels:[],
+            openDialog: false,
+        }
+
+    };
+    componentDidMount() {
+        this.getNotes();
+    }
+    getNotes = () => {
+        getAllNotes().then((res) => {
+            console.log("in getNotes ", res.data);
+            this.setState({
+                notes: res.data.object,
+            })
+            console.log('data', this.state.notes)
+        }
+        )
+    }
+    handleTitleChange = (event) => {
+        this.setState({
+            title: event.target.value
         })
     }
+    handleDescription = (event) => {
+        this.setState({
+            desc: event.target.value
+        })
+    }
+    handleClickTakeNote = (note) => {
+        console.log(note)
+        this.setState({
+            id: note.id,
+            title: note.title,
+            desc: note.desc,
+            openDialog: !this.state.openDialog,
+        })
+    }
+    closeDialog = () => {
+        if (this.state.title === "" && this.state.desc === "")
+            return this.setState({ openDialog: !this.state.openDialog })
+        else {
+            var editedNote = {
+                "title": this.state.title,
+                "desc": this.state.desc,
 
+            }
+            console.log('noted', editedNote)
+
+            this.setState({
+
+                openDialog: !this.state.openDialog,
+            })
+            updateNotes(editedNote, this.state.id).then((res) => {
+                console.log(res.data);
+                this.getNotes();
+            })
+        }
+    }
+    handleLabelDelete=(labels,noteId)=>{
+        removelabelnote(labels.labelId,noteId).then((response)=>{
+            console.log(response)
+            this.getNotes();
+        })
+    }
     render() {
         let getAllNotes = this.state.notes.map((keys) => {
             return (
-                <div key={keys.id}>
-                    < Card key={keys.id} className="note-display" >
-                        <div onClick={() => { this.handleClickTakeNote(keys) }} >
-                            <CardContent>
-                                {keys.title}
-                            </CardContent>
-                            <CardContent>
-                                {keys.desc}
-                            </CardContent>
-                            <div className="labelsinnote">
-                                {keys.label.map((labels) => {
-                                    return (
-                                        <div key={labels.labelId}> {labels === '' ? null :
-                                            <Chip className="labelsinnote" label={labels.name} variant="outlined"
-                                                onDelete={() => { this.handleLabelDelete(labels, keys.noteId) }}
-                                            />
-                                        }
-                                        </div>
-                                    )
+                <div key={keys.noteId}>
+                <div>
+                    {keys.label.map((labels) => {
+                        console.log(keys);
+                        
+                        console.log(labels.labelId ,parseInt(this.props.labelId));
 
-                                })}
-                            </div>
-                        </div>
-                        <CardActions  >
-
+                        return (<div key={labels.labelId}>{labels.labelId !== parseInt(this.props.labelId )? '' :
+                        <Card className="note-display" open={!this.state.openDialog} style={{ backgroundColor: keys.colour }}>
+                        <div onClick={() => this.handleClickTakeNote(keys.noteId, keys.title, keys.desc, keys.label.userId)}>
+                            <CardContent className="textdisplay">{keys.title}</CardContent>
+                            <CardContent className="textdisplay">{keys.desc}</CardContent>
+                            <Chip className="labelsinnote" label={labels.name} variant="outlined"
+                                            onDelete={()=>{this.handleLabelDelete(labels,keys.noteId)}}
+                                        />
                             <NotePropComponent noteId={keys.id} />
-                        </CardActions>
+                            
+                        </div>
+                        </Card>}
+                        </div>);
 
-                    </Card >
-                    <Dialog open={this.state.openDialog} >
-                        < Card className="note-dialog" style={{ boxShadow: "1px 1px 1px 1px" }
-                        } >
-                            <CardContent>
-                                <TextField style={{ width: "100%" }}
-                                    type="text"
-                                    multiline
-                                    value={this.state.title}
-                                    onChange={this.handleTitleChange}
-                                /></CardContent>
-                            <CardContent>
-                                <TextField
-                                    type="text" style={{ width: "100%" }}
-                                    multiline
-                                    value={this.state.desc}
-                                    onChange={this.handleDescription}
-                                /></CardContent>
-                            <CardActions>
+                    })}
+                </div>
 
-                                <NotePropComponent noteId={keys.id} />
-                                <Button className="button-close" onClick={this.closeDialog}>Close</Button>
 
-                            </CardActions>
-                        </Card >
-                    </Dialog>
-                </div >
+
+            </div>
             )
         })
         return (

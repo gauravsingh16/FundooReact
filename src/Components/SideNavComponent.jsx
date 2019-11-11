@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Drawer, MenuList, MenuItem, Divider, TextField, Dialog, Card, CardContent, IconButton,Button } from '@material-ui/core'
+import { Drawer, MenuList, MenuItem, Divider, TextField, Dialog, Card, CardContent, IconButton, Button } from '@material-ui/core'
 import EmojiObjectsOutlinedIcon from '@material-ui/icons/EmojiObjectsOutlined';
 import AddAlertOutlinedIcon from '@material-ui/icons/AddAlertOutlined'
 import ArchiveOutlinedIcon from '@material-ui/icons/ArchiveOutlined'
@@ -13,6 +13,7 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { withRouter } from 'react-router-dom';
 import EditLabelComponent from './EditLabelComponent';
 import LabelNotesComponent from './LabelNotesComponent';
+import { getAllNotes } from '../Controller/NoteService';
 
 const themes = createMuiTheme({
     overrides: {
@@ -26,12 +27,13 @@ const themes = createMuiTheme({
         }
     }
 })
- class SideNavComponent extends Component {
+class SideNavComponent extends Component {
 
     constructor(props) {
         super(props)
         this.state = {
             labels: [],
+            notes: [],
             labelDialog: false,
             name: '',
             trashNotes: []
@@ -41,6 +43,7 @@ const themes = createMuiTheme({
 
     componentDidMount() {
         this.getLabels();
+        this.getNotes();
     }
     dialogOpen = () => {
         this.setState({
@@ -48,11 +51,19 @@ const themes = createMuiTheme({
         })
     }
     getLabels = () => {
-     getAllLabels().then((response) => {
+        getAllLabels().then((response) => {
             console.log('data', response.data);
             this.setState({
                 labels: response.data.object
             })
+        })
+    }
+    getNotes = () => {
+        getAllNotes().then((response) => {
+            this.setState({
+                notes: response.data.object
+            })
+
         })
     }
     labelNameChange = (event) => {
@@ -75,39 +86,44 @@ const themes = createMuiTheme({
             })
         }
     }
- 
+
     handleDelete = () => {
         console.log("trash");
-       this.props.history.push('/trash'); 
+        this.props.history.push('/trash');
     }
-    handlenotes=()=>{
+    handlenotes = () => {
         this.props.history.push('/dashboard')
     }
-    handleArchive=()=>{
+    handleArchive = () => {
         this.props.history.push('/archive')
     }
-    handleClickClose=()=>{
+    handleClickClose = () => {
         this.setState({
-            labelDialog:!this.state.labelDialog
+            labelDialog: !this.state.labelDialog
         })
         this.getLabels();
     }
-    handlelabel=(data)=>{
-        this.props.history.push('/label/'+data)
+    handlelabel = (data) => {
+        console.log(data)
+        this.props.history.push('/label/' + data)
+    }
+    handlereminder = (data) => {
+        console.log(data)
+        this.props.history.push('/reminder')
     }
 
     render() {
         let showLabels = this.state.labels.map((data) => {
 
             return (
-                <MenuItem key={data.labelsId} onClick={()=>{this.handlelabel(data.labelsId)}}>
+                <MenuItem key={data.labelsId} onClick={() => { this.handlelabel(data.labelId) }}>
 
                     <LabelOutlinedIcon style={{ paddingRight: "10px" }} />{data.name}
 
                 </MenuItem>
             )
         })
-     
+
 
         return (
             <div>
@@ -119,60 +135,59 @@ const themes = createMuiTheme({
                                 <span>Notes</span>
 
                             </MenuItem>
-                            <MenuItem>
-                                <AddAlertOutlinedIcon />
-                                <span>
-                                    Reminders
-                    </span>
-                            </MenuItem>
-                            <Divider />
-                            <span>Labels</span>
-                            <div>
-                                {showLabels}
-                                
-                            </div>
-                            <MenuItem onClick={this.dialogOpen}>
-                                <CreateIcon style={{ paddingRight: "10px" }} />Edit labels
-                                        </MenuItem>
-                            <Divider />
-                            <Dialog open={this.state.labelDialog} >
-                                <Card style={{ width: "360px" }}>
-                                    <CardContent>
-                                        <IconButton >
-                                            <ClearOutlinedIcon  />
-                                        </IconButton>
-                                        <TextField
-                                            type="text"
-                                            placeholder="Create new Label"
-                                            multiline
-                                            onChange={this.labelNameChange}
-                                        />
-                                        <IconButton style={{display:"flex",float:"right"}}>
-                                            <DoneOutlinedIcon onClick={this.createLabel} />
-                                        </IconButton>
-                                        <EditLabelComponent/>
-                                        <Divider/>
-                                        <Button className="close-button" onClick={this.handleClickClose}>Close</Button>
-                                    </CardContent>
 
-                                </Card>
-                            </Dialog>
-                            <MenuItem onClick={this.handleArchive}>
-                                <ArchiveOutlinedIcon />
-                                <span>Archived Notes</span>
-                            </MenuItem>
-                            <MenuItem onClick={this.handleDelete} >
-                                <DeleteOutlineOutlinedIcon />
-                                <span>
-                                    Delete Notes
-                                </span>
+                            <Divider />
+                            <MenuItem  onClick={this.handlereminder}>
+                                <AddAlertOutlinedIcon /> Reminders
                                
-                            </MenuItem>
+                             </MenuItem>
+                        <span>Labels</span>
+                        <div>
+                            {showLabels}
+
+                        </div>
+                        <MenuItem onClick={this.dialogOpen}>
+                            <CreateIcon style={{ paddingRight: "10px" }} />Edit labels
+                                        </MenuItem>
+                        <Divider />
+                        <Dialog open={this.state.labelDialog} >
+                            <Card style={{ width: "360px" }}>
+                                <CardContent>
+                                    <IconButton >
+                                        <ClearOutlinedIcon />
+                                    </IconButton>
+                                    <TextField
+                                        type="text"
+                                        placeholder="Create new Label"
+                                        multiline
+                                        onChange={this.labelNameChange}
+                                    />
+                                    <IconButton style={{ display: "flex", float: "right" }}>
+                                        <DoneOutlinedIcon onClick={this.createLabel} />
+                                    </IconButton>
+                                    <EditLabelComponent />
+                                    <Divider />
+                                    <Button className="close-button" onClick={this.handleClickClose}>Close</Button>
+                                </CardContent>
+
+                            </Card>
+                        </Dialog>
+                        <MenuItem onClick={this.handleArchive}>
+                            <ArchiveOutlinedIcon />
+                            <span>Archived Notes</span>
+                        </MenuItem>
+                        <MenuItem onClick={this.handleDelete} >
+                            <DeleteOutlineOutlinedIcon />
+                            <span>
+                                Delete Notes
+                                </span>
+
+                        </MenuItem>
 
                         </MenuList>
                     </Drawer>
                 </MuiThemeProvider>
-            </div>
+            </div >
         )
     }
 }

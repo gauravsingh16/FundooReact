@@ -66,7 +66,7 @@ export default class TrashComponent extends Component {
         let getTrashNotes = this.state.notes.map((keys) => {
             return (
                 <div key={keys.id}>
-                    < Card key={keys.id} className="note-display" >
+                    < Card key={keys.id}  style={{backgroundColor:keys.color}} className="note-display" >
                         <div onClick={() => { this.handleClickTakeNote(keys) }} >
                             <CardContent>
                                 {keys.title}
@@ -87,7 +87,7 @@ export default class TrashComponent extends Component {
     
                         </Card >
                         <Dialog open={this.state.openDialog} >
-                            < Card className="note-dialog" style={{ boxShadow: "1px 1px 1px 1px" }
+                            < Card className="note-dialog" style={{ backgroundColor:keys.color, boxShadow: "1px 1px 1px 1px" }
                             } >
                                 <CardContent>
                                     <TextField style={{ width: "100%" }}
