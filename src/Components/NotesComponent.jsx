@@ -72,7 +72,7 @@ export default class NotesComponent extends Component {
                             multiline type="text" style={{ width: "90%" }} placeholder="Take a note...." onClick={this.handleClick}
                         />
                             <IconButton>
-                        <CheckBoxIcon/>
+                            {/* <Checkbox onClick={() => { this.handlecheckbox(key.labelId) }} /> */}
                             </IconButton>
                     </Card>
                 ) : (<Card className="noteTake" style={{ backgroundColor: this.state.color ,width:"50%" }}>

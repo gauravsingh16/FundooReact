@@ -15,6 +15,7 @@ import AddNoteLabelComponent from './AddNoteLabelComponent';
 import { keys } from '@material-ui/core/styles/createBreakpoints';
 import EditReminderComponent from './EditReminderComponent';
 import ColorChangeComponent from './ColorChangeComponent';
+import CollaboratorComponent from './CollaboratorComponent';
 
  class NotePropComponent extends Component {
     constructor(props) {
@@ -86,7 +87,8 @@ import ColorChangeComponent from './ColorChangeComponent';
                     </Paper>
                     </Popper>
                 <IconButton>
-                    <PersonAddIcon />
+                    
+                    <CollaboratorComponent noteId={this.props.noteId}/>
                 </IconButton>
               
                    <IconButton>
@@ -98,7 +100,10 @@ import ColorChangeComponent from './ColorChangeComponent';
                 <IconButton title="more" >
                     <MoreVertIcon onClick={(e) => this.handleMoreOpen(e)} />
                 </IconButton>
-                <Popper open={this.state.anchorEl} anchorEl={this.state.anchorEl}>
+                <Popper open={this.state.anchorEl} anchorEl={this.state.anchorEl}
+                style={{
+                    zIndex: "9999"
+                }}>
                     <Paper>
 
                         <MenuItem onClick={this.handleDelete}>Delete</MenuItem>

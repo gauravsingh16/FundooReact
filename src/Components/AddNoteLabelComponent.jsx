@@ -20,7 +20,6 @@ export default class AddNoteLabelComponent extends Component {
     }
     componentDidMount() {
         this.getLabels();
-
     }
 
     getLabels = () => {
@@ -99,7 +98,9 @@ export default class AddNoteLabelComponent extends Component {
                     Add Labels
                   </MenuItem>
 
-                <Popper open={this.state.anchorEl} anchorEl={this.state.anchorEl}>
+                <Popper open={this.state.anchorEl} anchorEl={this.state.anchorEl} style={{
+                    zIndex: "9999"
+                }}>
                     <Paper>
                         <MenuItem>Label note</MenuItem>
                         <MenuItem>

@@ -159,3 +159,12 @@ align-items: center;
   flex-direction: row;
   flex-wrap: wrap;
 }
+.pin-notes{
+  display: flex;
+  flex-direction: row;
+  flex-wrap:wrap;
+  background-color: #202124;
+
+  padding-left: 250px;
+  padding-top: 50px;
+}

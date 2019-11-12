@@ -66,3 +66,36 @@ export function removeReminder(id){
             console.log(data)
         return Axios.put(user_api_base_url+'note/changecolor?id='+id,data,{headers:headers});
     }
+    export function doPin(id){
+        console.log(id);
+        
+    return Axios.post(user_api_base_url+'note/pinnotes?id='+id,null,{headers:headers});
+}
+export function getPinNotes(){
+       
+        
+    return Axios.get(user_api_base_url+'note/getpinnotes',{headers:headers});
+}
+export function getAllCollabs(noteid){
+       
+        
+    return Axios.get(user_api_base_url+'note/getcollaborator?id='+noteid,{headers:headers});
+}
+export function addCollaborator(email,noteid){
+              console.log(email)
+              console.log(noteid);
+              
+    return Axios.post(user_api_base_url+'note/docollaborator?id='+noteid+'&email='+email,null,{headers:headers});
+}
+export function search(data){
+    console.log(data)
+    
+return Axios.get(user_api_base_url+'note/search?title='+data,null,{headers:headers});
+}
+export function deleteCollaborator(userid,noteid){
+    console.log(userid)
+    console.log(noteid);
+    
+return Axios.delete(user_api_base_url+'note/deletecollaborator?noteid='+noteid+'&userid='+userid,{headers:headers});
+}
+

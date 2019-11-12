@@ -82,20 +82,26 @@ export default class LabelNotesComponent extends Component {
         let getAllNotes = this.state.notes.map((keys) => {
             return (
                 <div key={keys.noteId}>
-                <div>
+                <div >
                     {keys.label.map((labels) => {
                         console.log(keys);
                         
                         console.log(labels.labelId ,parseInt(this.props.labelId));
 
                         return (<div key={labels.labelId}>{labels.labelId !== parseInt(this.props.labelId )? '' :
-                        <Card className="note-display" open={!this.state.openDialog} style={{ backgroundColor: keys.colour }}>
+                        <Card className="note-display" open={!this.state.openDialog} style={{ backgroundColor: keys.color }}>
                         <div onClick={() => this.handleClickTakeNote(keys.noteId, keys.title, keys.desc, keys.label.userId)}>
                             <CardContent className="textdisplay">{keys.title}</CardContent>
                             <CardContent className="textdisplay">{keys.desc}</CardContent>
                             <Chip className="labelsinnote" label={labels.name} variant="outlined"
                                             onDelete={()=>{this.handleLabelDelete(labels,keys.noteId)}}
                                         />
+                                         <div key={keys.reminder}>  {keys.reminder === null ? null :
+                                        <Chip className="labelsinnote" label={keys.reminder} variant="outlined"
+                                            onDelete={()=>{this.handleReminderDelete(keys.noteId)}}
+                                        />
+                                      }
+                                    </div>
                             <NotePropComponent noteId={keys.id} />
                             
                         </div>

@@ -2,7 +2,8 @@ import Axios from "axios";
 
 
 const user_api_base_url=process.env.REACT_APP_BASE_URL; 
-
+const headers={'Content-Type':'application/json',
+                'token':localStorage.getItem('object')};
 export default function adduser(user) {
     
         return Axios.post(user_api_base_url+'user/add',user);
@@ -17,6 +18,10 @@ export function forgetPass(user){
 export function resetPass(password,id){
         console.log(id)
         return Axios.put(user_api_base_url+'user/changepassword/'+id,password);
+}
+export function getLoggedUser(password,id){
+        console.log(id)
+        return Axios.get(user_api_base_url+'user/searchuser',{headers:headers});
 }
 
 

@@ -42,8 +42,11 @@ export default class EditReminderComponent extends Component {
                 <AddAlertIcon  onClick={(e) => this.handleOpenPopper(e)}  />
             </Tooltip>
 
-            <Popper open={this.state.anchorEl} anchorEl={this.state.anchorEl} >
-                    <Paper className="reminder-paper">
+            <Popper open={this.state.anchorEl} anchorEl={this.state.anchorEl} style={{
+                    zIndex: "9999"
+                }}>
+            
+            <Paper className="reminder-paper">
                         <MuiPickersUtilsProvider utils={DateFnsUtils}>
                             <DateTimePicker value={this.state.selectedDate} onChange={this.handleChangeDate} />
                         </MuiPickersUtilsProvider>

@@ -47,7 +47,8 @@ export default class LoginComponent extends Component {
                         openSnackBar: true,
                         SnackBarMessage: 'Login Successful'
                     })
-                    localStorage.setItem('object', res.data.object);
+                    localStorage.setItem('object', res.data.object.token);
+                    localStorage.setItem('email',res.data.object.email);
                     this.props.history.push('/dashboard')
             }else{
                 this.props.history.push('/login')

@@ -32,6 +32,7 @@ class App extends Component{
       <Route path="/addnotelabel" exact component={AddNoteLabelComponent}/>
       <Route path="/label/:labelid" exact component={LabelPage}/>
       <Route path="/reminder" exact component={ReminderPage}/>
+      
       </Router>
     
     )

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { Card, CardContent, TextField, CardActions, Button, Dialog,Chip } from '@material-ui/core'
-import { getAllNotes, updateNotes, removeReminder } from '../Controller/NoteService';
+import { Card, CardContent, TextField, CardActions, Button, Dialog,Chip, Checkbox } from '@material-ui/core'
+import { getAllNotes, updateNotes, removeReminder, doPin } from '../Controller/NoteService';
 import NotePropComponent from './NotePropComponent';
 import { removelabelnote } from '../Controller/labelservice';
 
@@ -82,6 +82,11 @@ export default class AllNotesComponent extends Component {
             this.getNotes();
         })
     }
+    handlecheckbox=(noteId)=>{
+        doPin(noteId).then((response)=>{
+            console.log(response)
+        })
+    }
     render() {
         let getAllNotes = this.state.notes.map((keys) => {
             return (
@@ -90,6 +95,7 @@ export default class AllNotesComponent extends Component {
                         <div onClick={() => { this.handleClickTakeNote(keys) }} >
                             <CardContent>
                                 {keys.title}
+                                <Checkbox style={{display:"flex",float:"right"}} onClick={() => { this.handlecheckbox(keys.noteId) }} />
                             </CardContent>
                             <CardContent>
                                 {keys.desc}
@@ -125,8 +131,8 @@ export default class AllNotesComponent extends Component {
                         </CardActions>
 
                     </Card >
-                    <Dialog open={this.state.openDialog} >
-                        < Card className="note-dialog" style={{ boxShadow: "1px 1px 1px 1px" }
+                    <Dialog open={this.state.openDialog}  >
+                        < Card className="note-dialog" style={{ backgroundColor:keys.color,boxShadow: "1px 1px 1px 1px" }
                         } >
                             <CardContent>
                                 <TextField style={{ width: "100%" }}
