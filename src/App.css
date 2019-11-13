@@ -168,3 +168,17 @@ align-items: center;
   padding-left: 250px;
   padding-top: 50px;
 }
+.list-view{
+  margin: 20px;
+  width: 500px;
+  height: auto;
+  margin-left:80px; 
+}
+.display-card {
+margin: 10px;
+width: 300px;
+height: auto;
+}
+.side-items{
+  height: 50px;
+}

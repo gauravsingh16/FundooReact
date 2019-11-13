@@ -14,10 +14,10 @@ class RegistrationComponent extends Component {
             name: "",
             email: "",
             password: "",
-            mobile: "",
+            mobileno: "",
             address: "",
-            errors:{},
-            snackbarOpen: false
+            errors:false,
+            openSnackBar : false
         }
     };
     onUsername = (event) => {
@@ -42,71 +42,58 @@ class RegistrationComponent extends Component {
         this.setState({ address: address })
     }
     onMobile = (event) => {
-        var mobile = event.target.value;
-        this.setState({ mobile: mobile })
+        var mobileno = event.target.value;
+        this.setState({ mobileno: mobileno })
         
     }
-    handleValidation(){
-        let number = this.state.mobile;
-        let passwords=this.state.password;
-        let errors = {};
-        let formIsValid = true;
+    
+        onSubmit = (event) => {
+        
+            let user = {
+                "username": this.state.username,
+                "name": this.state.name,
+                "email": this.state.email,
+                "password": this.state.password,
+                "mobileno": this.state.mobileno,
+                "address": this.state.address
+            };
 
         //Name
-        if(!number["mobile"]){
-           formIsValid = false;
-           errors["mobile"] = "Cannot be empty";
-        }
-
-        if(typeof number["mobile"] !== "undefined"){
-           if(!number["mobile"].match(/(7|8|9)\d{9}/)){
-              formIsValid = false;
-              errors["mobile"] = "Only numbers";
-           }        
-        }
-
-        //Email
-        if(!passwords["password"]){
-           formIsValid = false;
-           errors["password"] = "Cannot be empty";
-        }
-
-        if(typeof passwords["password"] !== "undefined"){
-           
-           if (!passwords["password"].match(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/)){
-              formIsValid = false;
-              errors["password"] = "Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters";
-            }
-       }  
-
-       this.setState({errors: errors});
-       return formIsValid;
-   }
-    onSubmit = (event) => {
-        event.preventDefault();
-
-        let user = {
-            "username": this.state.username,
-            "name": this.state.name,
-            "email": this.state.email,
-            "password": this.state.password,
-            "mobile": this.state.mobile,
-            "address": this.state.address
-        };
-        
-        if (this.state.email === "") {
+        const pattern = /[a-zA-Z0-9]+[\.]?([a-zA-Z0-9]+)?[\@][a-z]{3,9}[\.][a-z]{2,5}/g;
+        const pattern1=/^[6789]\d{9}$/;
+        const result = pattern.test(this.state.email);
+        const result1=pattern1.test(this.state.mobile);
+        if (this.state.email === '') {
             this.setState({
                 openSnackBar: true,
-                SnackBarMessage: "Field Cannot be Empty"
+                snackBarMsg: "email cannot be empty"
             })
-        } else {
-
+        } else if (result !== true) {
+                this.setState({
+                    openSnackBar: true,
+                    snackBarMsg: "email should be in format"
+                })
+            } else if (this.state.password === '') {
+                this.setState({
+                    openSnackBar: true,
+                    snackBarMsg: "Password cannot be empty"
+                })
+            } else if(this.state.mobileno.length !== 10){
+                console.log(this.state.mobileno)
+                this.setState({
+                    openSnackBar:true,
+                    snackBarMsg:"Mobile number not correct"
+                })
+               
+            }        
+          else {
+              console.log(this.state.mobileno)
             adduser(user)
                 .then(res => {
                     console.log(res);
                     this.setState({
                         openSnackBar: true,
-                        SnackBarMessage: 'Register Successful'
+                        SnackBarMessage: 'Check Mail for Login'
                     })
                     this.props.history.push('/login')
 
@@ -154,13 +141,13 @@ class RegistrationComponent extends Component {
                     value={this.state.password}
                     onChange={this.onPassword}
                     className="input"
-                    pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" 
+                    
                     title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
                 /><span style={{color: "red"}}>{this.state.errors["password"]}</span><br />
                 <TextField required
                     label="MobileNo"
-                    value={this.state.mobile}
-                    pattern="(7|8|9)\d{9}"
+                    value={this.state.mobileno}
+                   
                     onChange={this.onMobile}
                     className="input"
                 /><span style={{color: "red"}}>{this.state.errors["mobile"]}</span><br/>

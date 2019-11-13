@@ -25,7 +25,6 @@ export default class CollaboratorComponent extends Component {
             notes:[],
             email:'',
             view: false,
-            
             id: '',
             openSnackBar: '',
             Error: false,

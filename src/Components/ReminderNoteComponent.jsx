@@ -83,10 +83,12 @@ export default class ReminderNoteComponent extends Component {
     }
     render() {
         let getAllReminderNotes = this.state.notes.map((keys) => {
+            const cardView = this.props.viewprop ? "list-view" : "display-card"
+
             return (
 
                 < div key={keys.id}>
-                    < Card key={keys.id}  style={{backgroundColor:keys.color}} className="note-display" >
+                    < Card key={keys.id}  style={{backgroundColor:keys.color}} className={cardView} >
                         <div onClick={() => { this.handleClickTakeNote(keys) }} >
                             <CardContent>
                                 {keys.title}
@@ -94,7 +96,7 @@ export default class ReminderNoteComponent extends Component {
                             <CardContent>
                                 {keys.desc}
                             </CardContent>
-                            <div className="labelsinnote">
+                            <div >
                                 {keys.label.map((labels) => {
                                     return (
                                         <div key={labels.labelId}> {labels === '' ? ' ' :

@@ -19,7 +19,7 @@ const themes = createMuiTheme({
     overrides: {
         MuiDrawer: {
             paper: {
-                top: "69px",
+                top: "62px",
                 display: "table"
             }, paperAnchorLeft: {
                 width: "250px"
@@ -130,23 +130,23 @@ class SideNavComponent extends Component {
                 <MuiThemeProvider theme={themes}>
                     <Drawer variant='persistent' overflow='auto' open={this.props.menubar}>
                         <MenuList>
-                            <MenuItem onClick={this.handlenotes}>
-                                <EmojiObjectsOutlinedIcon />
+                            <MenuItem className="side-items" onClick={this.handlenotes}>
+                                <EmojiObjectsOutlinedIcon style={{ paddingRight: "10px" }} />
                                 <span>Notes</span>
 
                             </MenuItem>
 
-                            <Divider />
-                            <MenuItem  onClick={this.handlereminder}>
-                                <AddAlertOutlinedIcon /> Reminders
+                            <MenuItem className="side-items" onClick={this.handlereminder}>
+                                <AddAlertOutlinedIcon style={{ paddingRight: "10px" }}/> Reminders
                                
                              </MenuItem>
-                        <span>Labels</span>
+                            <Divider />
+                        <span style={{paddingLeft:"20px"}}>Labels</span>
                         <div>
                             {showLabels}
 
                         </div>
-                        <MenuItem onClick={this.dialogOpen}>
+                        <MenuItem className="side-items" onClick={this.dialogOpen}>
                             <CreateIcon style={{ paddingRight: "10px" }} />Edit labels
                                         </MenuItem>
                         <Divider />
@@ -172,12 +172,12 @@ class SideNavComponent extends Component {
 
                             </Card>
                         </Dialog>
-                        <MenuItem onClick={this.handleArchive}>
-                            <ArchiveOutlinedIcon />
+                        <MenuItem className="side-items" onClick={this.handleArchive}>
+                            <ArchiveOutlinedIcon style={{ paddingRight: "10px" }}/>
                             <span>Archived Notes</span>
                         </MenuItem>
-                        <MenuItem onClick={this.handleDelete} >
-                            <DeleteOutlineOutlinedIcon />
+                        <MenuItem className="side-items" onClick={this.handleDelete} >
+                            <DeleteOutlineOutlinedIcon style={{ paddingRight: "10px" }} />
                             <span>
                                 Delete Notes
                                 </span>

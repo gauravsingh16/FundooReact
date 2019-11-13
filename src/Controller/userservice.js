@@ -23,5 +23,10 @@ export function getLoggedUser(password,id){
         console.log(id)
         return Axios.get(user_api_base_url+'user/searchuser',{headers:headers});
 }
+export function verify(token){
+        console.log(token)
+        return Axios.get(user_api_base_url+'user/verify?token='+token,{headers:headers});
+}
+
 
 

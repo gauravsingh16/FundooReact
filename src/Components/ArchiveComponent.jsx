@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import { Card, CardContent, TextField, CardActions, Button,Dialog,Chip } from '@material-ui/core'
+import { Card, CardContent, TextField, CardActions, Button, Dialog, Chip } from '@material-ui/core'
 import NotePropComponent from './NotePropComponent'
 import { getArchiveNote, updateNotes } from '../Controller/NoteService'
+import AccessTimeIcon from '@material-ui/icons/AccessTime'
 
 export default class ArchiveComponent extends Component {
     constructor(props) {
@@ -70,23 +71,27 @@ export default class ArchiveComponent extends Component {
     }
     render() {
         let getArchiveNotes = this.state.notes.map((keys) => {
+            const cardView = this.props.viewprop ? "list-view" : "display-card"
             return (
-                <div key={keys.id}>
-                    < Card key={keys.id} style={{backgroundColor:keys.color}} className="note-display" >
-                        <div onClick={() => { this.handleClickTakeNote(keys) }} >
-                            <CardContent>
-                                {keys.title}
-                            </CardContent>
-                            <CardContent>
-                                {keys.desc}
-                            </CardContent>
-                        </div>
+
+                <div >
+                    <div key={keys.id}>
+                        < Card key={keys.id} style={{ backgroundColor: keys.color }} className={cardView} >
+                            <div onClick={() => { this.handleClickTakeNote(keys) }} >
+                                <CardContent>
+                                    {keys.title}
+                                </CardContent>
+                                <CardContent>
+                                    {keys.desc}
+                                </CardContent>
+                            </div>
+                    
                         <div >
                             {keys.label.map((labels) => {
                                 return (
                                     <div key={labels.labelId}> {labels === '' ? null :
                                         <Chip className="labelsinnote" label={labels.name} variant="outlined"
-                                            onDelete={()=>{this.handleLabelDelete(labels,keys.noteId)}}
+                                            onDelete={() => { this.handleLabelDelete(labels, keys.noteId) }}
                                         />
                                     }
                                     </div>
@@ -94,24 +99,25 @@ export default class ArchiveComponent extends Component {
 
                             })}
                         </div>
-                       <div>                     
-                                    <div key={keys.reminder}>  {keys.reminder === null ? null :
-                                        <Chip className="labelsinnote" label={keys.reminder} variant="outlined"
-                                            onDelete={()=>{this.handleReminderDelete(keys.noteId)}}
-                                        />
-                                      }
-                                    </div>
-                               
-                            
+                        <div>
+                            <div key={keys.reminder}>  {keys.reminder === null ? null :
+                                <Chip icon={<AccessTimeIcon/>}className="labelsinnote" label={keys.reminder} variant="outlined"
+                                    onDelete={() => { this.handleReminderDelete(keys.noteId) }}
+                                />
+                            }
+                            </div>
+
+
                         </div>
                         <CardActions>
-                            
-                            <NotePropComponent noteId={keys.id}/>
+
+                            <NotePropComponent noteId={keys.id} />
                         </CardActions>
 
                     </Card >
+                    </div>
                     <Dialog open={this.state.openDialog} >
-                        < Card className="note-dialog" style={{  backgroundColor:keys.color,boxShadow: "1px 1px 1px 1px" }
+                        < Card className="note-dialog" style={{ backgroundColor: keys.color, boxShadow: "1px 1px 1px 1px" }
                         } >
                             <CardContent>
                                 <TextField style={{ width: "100%" }}
@@ -130,8 +136,8 @@ export default class ArchiveComponent extends Component {
 
                                 /></CardContent>
                             <CardActions>
-                            
-                                <NotePropComponent noteId={keys.id}/>
+
+                                <NotePropComponent noteId={keys.id} />
                                 <Button className="button-close" onClick={this.closeDialog}>Close</Button>
 
                             </CardActions>
@@ -147,5 +153,5 @@ export default class ArchiveComponent extends Component {
         )
     }
 }
-    
+
 

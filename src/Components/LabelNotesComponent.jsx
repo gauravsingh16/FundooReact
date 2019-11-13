@@ -3,6 +3,7 @@ import { Card, CardContent, TextField, CardActions, Button, Dialog, Chip } from 
 import NotePropComponent from './NotePropComponent';
 import { getAllNotes, updateNotes } from '../Controller/NoteService';
 import { removelabelnote } from '../Controller/labelservice';
+import AccessTimeIcon from '@material-ui/icons/AccessTime'
 
 
 export default class LabelNotesComponent extends Component {
@@ -80,6 +81,8 @@ export default class LabelNotesComponent extends Component {
     }
     render() {
         let getAllNotes = this.state.notes.map((keys) => {
+            const cardView = this.props.viewprop ? "list-view" : "display-card"
+
             return (
                 <div key={keys.noteId}>
                 <div >
@@ -89,7 +92,7 @@ export default class LabelNotesComponent extends Component {
                         console.log(labels.labelId ,parseInt(this.props.labelId));
 
                         return (<div key={labels.labelId}>{labels.labelId !== parseInt(this.props.labelId )? '' :
-                        <Card className="note-display" open={!this.state.openDialog} style={{ backgroundColor: keys.color }}>
+                        <Card className={cardView} open={!this.state.openDialog} style={{ backgroundColor: keys.color }}>
                         <div onClick={() => this.handleClickTakeNote(keys.noteId, keys.title, keys.desc, keys.label.userId)}>
                             <CardContent className="textdisplay">{keys.title}</CardContent>
                             <CardContent className="textdisplay">{keys.desc}</CardContent>
@@ -97,7 +100,7 @@ export default class LabelNotesComponent extends Component {
                                             onDelete={()=>{this.handleLabelDelete(labels,keys.noteId)}}
                                         />
                                          <div key={keys.reminder}>  {keys.reminder === null ? null :
-                                        <Chip className="labelsinnote" label={keys.reminder} variant="outlined"
+                                        <Chip icon={<AccessTimeIcon/>}  className="labelsinnote" label={keys.reminder} variant="outlined"
                                             onDelete={()=>{this.handleReminderDelete(keys.noteId)}}
                                         />
                                       }

@@ -4,18 +4,33 @@ import NotesComponent from '../Components/NotesComponent'
 import AllNotesComponent from '../Components/AllNotesComponent'
 import PinnedNoteComponent from '../Components/PinnedNoteComponent'
 export default class Dashboard extends Component {
-    render() {
-        return (
-            <div>
-              <header>
-                <AppbarComponent/>
-                  </header>  
-                  <body className="dashboard-body">
-                    <NotesComponent/>
-                    <PinnedNoteComponent className="pin-notes"/>
-                    <AllNotesComponent/>
-                    </body>
-            </div>
-        )
+  constructor(props) {
+    super(props);
+    this.state = {
+
+      view: false,
+
+
+
     }
+  }
+  handleView = (isTrue) => {
+    this.setState({
+      view: !this.state.view
+    })
+  }
+  render() {
+    console.log(this.state.view)
+    return (
+      <div>
+
+        <body className="dashboard-body">
+          <AppbarComponent viewprop={this.handleView} />
+          <NotesComponent />
+          <PinnedNoteComponent className="pin-notes" />
+          <AllNotesComponent viewprop={this.state.view} />
+        </body>
+      </div>
+    )
+  }
 }

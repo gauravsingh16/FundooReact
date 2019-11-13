@@ -13,6 +13,7 @@ export default class TrashComponent extends Component {
             desc: '',
             notes: [],
             openDialog: false,
+            dialogOpen: false
         }
 
     };
@@ -32,6 +33,9 @@ export default class TrashComponent extends Component {
         return this.setState({ openDialog: !this.state.openDialog })
 
     }
+    closeopendialog = () => {
+        return this.setState({ dialogOpen: !this.state.dialogOpen })
+    }
     handleClickTakeNote = (note) => {
         console.log(note)
         this.setState({
@@ -41,22 +45,29 @@ export default class TrashComponent extends Component {
             openDialog: !this.state.openDialog,
         })
     }
-    restorenote=(note)=>{
+    handlepopup = (note) => {
+        console.log(note)
+        this.setState({
+            dialogOpen: !this.state.dialogOpen
+        })
+    }
+    restorenote = (note) => {
         console.log(this.id)
 
-       trashNotes(note.id).then((response)=>
-        {
-           console.log(response)
+        trashNotes(note.id).then((response) => {
+            console.log(response)
             this.getNotes();
         }
-       )
-        
+        )
+
     }
-    deleteforever=(note)=>{
-        deleteNote(note.id).then((response)=>
-        {
+    deleteforever = (note) => {
+        deleteNote(note.id).then((response) => {
             console.log(response);
             this.getNotes();
+            this.setState({
+                dialogOpen:!this.state.dialogOpen
+            })
         }
         )
     }
@@ -64,9 +75,10 @@ export default class TrashComponent extends Component {
     render() {
 
         let getTrashNotes = this.state.notes.map((keys) => {
+            const cardView = this.props.viewprop ? "list-view" : "display-card"
             return (
                 <div key={keys.id}>
-                    < Card key={keys.id}  style={{backgroundColor:keys.color}} className="note-display" >
+                    < Card key={keys.id} style={{ backgroundColor: keys.color }} className={cardView} >
                         <div onClick={() => { this.handleClickTakeNote(keys) }} >
                             <CardContent>
                                 {keys.title}
@@ -76,53 +88,64 @@ export default class TrashComponent extends Component {
                             </CardContent>
                         </div>
                         <CardActions  >
-                        <IconButton title="Restore" onClick={() => { this.restorenote(keys) }}>
-                                    <RestoreFromTrashIcon/>
-                                        </IconButton>
-                                        <IconButton title="Delete Forever" onClick={()=>{this.deleteforever(keys)}}>
-                                    <DeleteForeverIcon/>
-                                        </IconButton>
+                            <IconButton title="Restore" onClick={() => { this.restorenote(keys) }}>
+                                <RestoreFromTrashIcon />
+                            </IconButton>
+                            <IconButton title="Delete Forever" onClick={() => { this.handlepopup(keys) }}>
+                                <DeleteForeverIcon />
+                            </IconButton>
+                            {/* <NotePropComponent noteId={keys.id}/> */}
+                        </CardActions>
+
+                    </Card >
+                    <Dialog open={this.state.openDialog} >
+                        < Card className="note-dialog" style={{ backgroundColor: keys.color, boxShadow: "1px 1px 1px 1px" }
+                        } >
+                            <CardContent>
+                                <TextField style={{ width: "100%" }}
+                                    type="text"
+                                    multiline
+                                    value={this.state.title}
+                                /></CardContent>
+                            <CardContent>
+                                <TextField
+                                    type="text" style={{ width: "100%" }}
+                                    multiline
+                                    value={this.state.desc}
+                                /></CardContent>
+                            <CardActions>
+                                <IconButton onClick={() => { this.restorenote(keys) }}>
+                                    <RestoreFromTrashIcon />
+                                </IconButton>
+                                <IconButton onClick={() => { this.handlepopup(keys) }}>
+                                    <DeleteForeverIcon />
+                                </IconButton>
+
                                 {/* <NotePropComponent noteId={keys.id}/> */}
+                                <Button className="button-close" onClick={this.closeDialog}>Close</Button>
+
                             </CardActions>
-    
                         </Card >
-                        <Dialog open={this.state.openDialog} >
-                            < Card className="note-dialog" style={{ backgroundColor:keys.color, boxShadow: "1px 1px 1px 1px" }
-                            } >
-                                <CardContent>
-                                    <TextField style={{ width: "100%" }}
-                                        type="text"
-                                        multiline
-                                        value={this.state.title}
-                                    /></CardContent>
-                                <CardContent>
-                                    <TextField
-                                        type="text" style={{ width: "100%" }}
-                                        multiline
-                                        value={this.state.desc}
-                                    /></CardContent>
-                                <CardActions>
-                                    <IconButton onClick={() => { this.restorenote(keys) }}>
-                                    <RestoreFromTrashIcon/>
-                                        </IconButton>
-                                        <IconButton onClick={()=>{this.deleteforever(keys)}}>
-                                    <DeleteForeverIcon/>
-                                        </IconButton>
+                    </Dialog>
+                    <Dialog open={this.state.dialogOpen} >
+                        < Card className="" style={{boxShadow: "1px 1px 1px 1px" , height:"150px",width:"300px" }
+                        } >
+                            <span> Delete Note Forever?</span><br/>
+                            {/* <NotePropComponent noteId={keys.id}/> */}
+                            <Button className="delete-button" onClick={this.closeopendialog}>Close</Button>
+                            <Button className="delete-button" onClick={this.deleteforever((keys))}>Delete</Button>
 
-                                    {/* <NotePropComponent noteId={keys.id}/> */}
-                                    <Button className="button-close" onClick={this.closeDialog}>Close</Button>
 
-                                </CardActions>
-                            </Card >
-                        </Dialog>
-                    </div >
-                    )
-                })
-                return(
+                        </Card >
+                    </Dialog>
+                </div >
+            )
+        })
+        return (
             <div className="note-design">
-                        {getTrashNotes}
-                    </div>
-                    )
-                }
-            }
+                {getTrashNotes}
+            </div>
+        )
+    }
+}
 // export default withRouter(TrashComponent)

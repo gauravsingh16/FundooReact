@@ -3,7 +3,7 @@ import { Card, CardContent, TextField, CardActions, Button, Dialog,Chip, Checkbo
 import { getAllNotes, updateNotes, removeReminder, doPin } from '../Controller/NoteService';
 import NotePropComponent from './NotePropComponent';
 import { removelabelnote } from '../Controller/labelservice';
-
+import AccessTimeIcon from '@material-ui/icons/AccessTime'
 export default class AllNotesComponent extends Component {
     constructor(props) {
         super(props);
@@ -89,9 +89,10 @@ export default class AllNotesComponent extends Component {
     }
     render() {
         let getAllNotes = this.state.notes.map((keys) => {
+            const cardView = this.props.viewprop ? "list-view" : "display-card"
             return (
                 < div key={keys.id}   >
-                    < Card key={keys.id} className="note-display" style={{backgroundColor:keys.color}} >
+                    < Card key={keys.id} className={cardView} style={{backgroundColor:keys.color}} >
                         <div onClick={() => { this.handleClickTakeNote(keys) }} >
                             <CardContent>
                                 {keys.title}
@@ -115,7 +116,7 @@ export default class AllNotesComponent extends Component {
                         </div>
                        <div>                     
                                     <div key={keys.reminder}>  {keys.reminder === null ? null :
-                                        <Chip className="labelsinnote" label={keys.reminder} variant="outlined"
+                                        <Chip icon={<AccessTimeIcon/>}className="labelsinnote" label={keys.reminder} variant="outlined"
                                             onDelete={()=>{this.handleReminderDelete(keys.noteId)}}
                                         />
                                       }

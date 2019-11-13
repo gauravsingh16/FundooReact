@@ -8,12 +8,13 @@ import Register from './Pages/Register';
 import ResetPasswordComponent from './Components/ResetPasswordComponent'
 import Dashboard from './Pages/Dashboard'
 import DeletePage from './Pages/DeletePage'
-
+// import VerifyUserComponent './Components/VerifyUserComponent'
 import ArchivePage from './Pages/ArchivePage'
 import AddNoteLabelComponent from './Components/AddNoteLabelComponent'
 import LabelPage from './Pages/LabelPage'
 import LabelNotesComponent from  './Components/LabelNotesComponent'
 import ReminderPage from './Pages/ReminderPage'
+import VerifyUserComponent from './Components/VerifyUserComponent'
 
 class App extends Component{
   render(){
@@ -32,7 +33,7 @@ class App extends Component{
       <Route path="/addnotelabel" exact component={AddNoteLabelComponent}/>
       <Route path="/label/:labelid" exact component={LabelPage}/>
       <Route path="/reminder" exact component={ReminderPage}/>
-      
+      <Route path="/verify/:token"exact component={VerifyUserComponent}/>
       </Router>
     
     )
