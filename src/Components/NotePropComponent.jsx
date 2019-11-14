@@ -31,10 +31,15 @@ import CollaboratorComponent from './CollaboratorComponent';
             closepaper: false,
             labelmenu:false,
             archive:false,
-            noteId:this.props.noteId
+            noteId:this.props.noteId,
+            default:true
         }
 
     }
+    componentDidMount(){
+        
+    }
+   
     closePaper = () => {
         this.setState({
             closepaper: !this.state.closepaper
@@ -57,6 +62,7 @@ import CollaboratorComponent from './CollaboratorComponent';
         trashNotes(this.props.noteId).then((response)=>
         {
             console.log(response)
+            this.props.AllNotesComponent(true);
             
         })
     }
@@ -69,8 +75,18 @@ import CollaboratorComponent from './CollaboratorComponent';
         archiveNote(this.props.noteId).then((response)=>
         {
             console.log(response)
+            this.props.AllNotesComponent(true);
+            
         }
         )
+    }
+    propfrom=(data)=>{
+        console.log(data);
+        this.setState({
+            default:data,
+            // anchorEl:!this.state.anchorEl
+        });
+        this.props.AllNotesComponent(this.state.default);
     }
 
     render() {
@@ -78,7 +94,7 @@ import CollaboratorComponent from './CollaboratorComponent';
             <div>
 
                 <IconButton >
-                    <EditReminderComponent noteId={this.props.noteId}/>
+                    <EditReminderComponent noteId={this.props.noteId} NotePropComponent={this.propfrom}/>
                 </IconButton>
                 
                 <Popper  >
@@ -88,14 +104,14 @@ import CollaboratorComponent from './CollaboratorComponent';
                     </Popper>
                 <IconButton>
                     
-                    <CollaboratorComponent noteId={this.props.noteId}/>
+                    <CollaboratorComponent noteId={this.props.noteId } NotePropComponent={this.propfrom}/>
                 </IconButton>
               
                    <IconButton>
-                   <ColorChangeComponent noteId={this.props.noteId}/>
+                   <ColorChangeComponent noteId={this.props.noteId} NotePropComponent={this.propfrom}/>
                 </IconButton>
                 <IconButton>
-                    <ArchiveIcon onClick={this.handleArchive} />
+                    <ArchiveIcon onClick={this.handleArchive}  NotePropComponent={this.propfrom} />
                 </IconButton>
                 <IconButton title="more" >
                     <MoreVertIcon onClick={(e) => this.handleMoreOpen(e)} />
@@ -103,11 +119,12 @@ import CollaboratorComponent from './CollaboratorComponent';
                 <Popper open={this.state.anchorEl} anchorEl={this.state.anchorEl}
                 style={{
                     zIndex: "9999"
-                }}>
+                }}
+                >
                     <Paper>
 
                         <MenuItem onClick={this.handleDelete}>Delete</MenuItem>
-                        <AddNoteLabelComponent noteId={this.props.noteId}/>
+                        <AddNoteLabelComponent noteId={this.props.noteId }  NotePropComponent={this.propfrom} />
                     </Paper>
                 </Popper>
                 

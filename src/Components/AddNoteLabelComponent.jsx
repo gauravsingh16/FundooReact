@@ -3,7 +3,7 @@ import Paper from '@material-ui/core/Paper'
 import { MenuItem, InputBase, IconButton, Checkbox, Divider, Button } from '@material-ui/core';
 import Popper from '@material-ui/core/Popper';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
-import getAllLabels, { createlabel, labelnote } from '../Controller/labelservice';
+import getAllLabels, { createlabel, labelnote, labelCreateOnNote } from '../Controller/labelservice';
 import AddIcon from '@material-ui/icons/Add';
 import { getAllNotes } from '../Controller/NoteService';
 export default class AddNoteLabelComponent extends Component {
@@ -38,7 +38,11 @@ export default class AddNoteLabelComponent extends Component {
         })
     }
     closePaper = () => {
-        return this.setState({ closepaper: !this.state.closepaper })
+        this.props.NotePropComponent(true)
+        return this.setState({ 
+            anchorEl:!this.state.anchorEl, 
+            closepaper: !this.state.closepaper
+        })
     }
     labelmenu = () => {
         this.setState({
@@ -61,9 +65,11 @@ export default class AddNoteLabelComponent extends Component {
         let data = {
             name: this.state.name
         }
-        createlabel(data).then((response) => {
-            console.log(response)
+       
+        labelCreateOnNote(this.props.noteId,data).then((resp)=>{
+            console.log(resp)
         })
+
     }
     handlecheckbox = (labelId) => {
         labelnote(labelId, this.props.noteId).then((resposne) => {

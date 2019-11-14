@@ -63,7 +63,11 @@ class AppbarComponent extends Component {
         console.log(this.state.search)
         search(this.state.search).then((resp) => {
             console.log(resp);
-
+            this.setState({
+                searchNotes:resp.data.object
+            })
+            console.log(this.state.searchNotes)
+          this.props.searchnotes(this.state.searchNotes)  
         })
     }
     handleView = () => {

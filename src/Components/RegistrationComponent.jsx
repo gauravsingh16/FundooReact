@@ -141,7 +141,7 @@ class RegistrationComponent extends Component {
                     value={this.state.password}
                     onChange={this.onPassword}
                     className="input"
-                    
+                    type="password"
                     title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
                 /><span style={{color: "red"}}>{this.state.errors["password"]}</span><br />
                 <TextField required

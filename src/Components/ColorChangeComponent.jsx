@@ -51,7 +51,7 @@ export default class ColourChange extends Component {
         }
         changeColor(data,this.props.noteId).then(res=>{
             console.log("Response after hitting login api is ",res);
-          
+          this.props.NotePropComponent(true);
             
         }).catch(err=>{
             console.log("Error after hitting login api  ",err);

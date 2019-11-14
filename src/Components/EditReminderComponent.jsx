@@ -31,7 +31,11 @@ export default class EditReminderComponent extends Component {
         }
         doReminderNote(this.props.noteId,data).then((response)=>{
             console.log(response);
-        
+
+            this.props.NotePropComponent(true);
+            this.setState({
+                anchorEl:!this.state.anchorEl
+            })
         })
     }
     render() {

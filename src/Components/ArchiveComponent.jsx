@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import { Card, CardContent, TextField, CardActions, Button, Dialog, Chip } from '@material-ui/core'
+import { Card, CardContent, TextField, CardActions, Button, Dialog, Chip,Checkbox } from '@material-ui/core'
 import NotePropComponent from './NotePropComponent'
-import { getArchiveNote, updateNotes } from '../Controller/NoteService'
+import { getArchiveNote, updateNotes, deleteCollaborator, removeReminder, doPin } from '../Controller/NoteService'
 import AccessTimeIcon from '@material-ui/icons/AccessTime'
+import { removelabelnote } from '../Controller/labelservice'
 
 export default class ArchiveComponent extends Component {
     constructor(props) {
@@ -19,6 +20,7 @@ export default class ArchiveComponent extends Component {
     };
     componentDidMount() {
         this.getNotes();
+        
     }
     getNotes = () => {
         getArchiveNote().then((res) => {
@@ -69,53 +71,84 @@ export default class ArchiveComponent extends Component {
             })
         }
     }
+    handleLabelDelete = (labels, noteId) => {
+        removelabelnote(labels.labelId, noteId).then((response) => {
+            console.log(response)
+            this.getNotes();
+        })
+    }
+    handleReminderDelete = (noteId) => {
+        removeReminder(noteId).then((response) => {
+            console.log(response);
+            this.getNotes();
+        })
+    }   
+     handleprops=(data)=>{
+        console.log(data)
+        if(data){
+            this.getNotes();
+        }
+        
+    }
+    handleCollabaratedDelete=(noteId,userId)=>{
+        deleteCollaborator(userId,noteId).then((resp)=>{
+            console.log(resp) 
+            this.getNotes();
+
+        })
+    }
     render() {
         let getArchiveNotes = this.state.notes.map((keys) => {
             const cardView = this.props.viewprop ? "list-view" : "display-card"
             return (
+                < div key={keys.id}   >
+                    < Card key={keys.id} className={cardView} style={{ backgroundColor: keys.color }} >
+                        <div onClick={() => { this.handleClickTakeNote(keys) }} >
+                            <CardContent>
+                                {keys.title}
+                                <Checkbox style={{ display: "flex", float: "right" }} onClick={() => { this.handlecheckbox(keys.noteId) }} />
+                            </CardContent>
+                            <CardContent>
+                                {keys.desc}
+                            </CardContent>
+                            <div >
+                                {keys.label.map((labels) => {
+                                    return (
+                                        <div key={labels.labelId}> {labels === '' ? null :
+                                            <Chip className="labelsinnote" label={labels.name} variant="outlined"
+                                                onDelete={() => { this.handleLabelDelete(labels, keys.noteId) }}
+                                            />
+                                        }
+                                        </div>
+                                    )
 
-                <div >
-                    <div key={keys.id}>
-                        < Card key={keys.id} style={{ backgroundColor: keys.color }} className={cardView} >
-                            <div onClick={() => { this.handleClickTakeNote(keys) }} >
-                                <CardContent>
-                                    {keys.title}
-                                </CardContent>
-                                <CardContent>
-                                    {keys.desc}
-                                </CardContent>
+                                })}
                             </div>
-                    
-                        <div >
-                            {keys.label.map((labels) => {
-                                return (
-                                    <div key={labels.labelId}> {labels === '' ? null :
-                                        <Chip className="labelsinnote" label={labels.name} variant="outlined"
-                                            onDelete={() => { this.handleLabelDelete(labels, keys.noteId) }}
-                                        />
-                                    }
-                                    </div>
-                                )
+                            <div>
+                                <div key={keys.reminder}>  {keys.reminder === null ? null :
+                                    <Chip icon={<AccessTimeIcon />} className="labelsinnote" label={keys.reminder} variant="outlined"
+                                        onDelete={() => { this.handleReminderDelete(keys.noteId) }}
+                                    />
+                                }
+                                </div>
 
-                            })}
-                        </div>
-                        <div>
-                            <div key={keys.reminder}>  {keys.reminder === null ? null :
-                                <Chip icon={<AccessTimeIcon/>}className="labelsinnote" label={keys.reminder} variant="outlined"
-                                    onDelete={() => { this.handleReminderDelete(keys.noteId) }}
-                                />
-                            }
+
                             </div>
-
-
+                            <div>
+                                {keys.user.map((user) => {
+                                    return (<div key={user.userId}>{user === null ? '' :
+                                        <Chip label={user.email} variant="outlined" onDelete={() => { this.handleCollabaratedDelete(keys.noteId, user.userId) }} />}
+                                    </div>);
+                                })}
+                            </div>
                         </div>
-                        <CardActions>
 
-                            <NotePropComponent noteId={keys.id} />
+                        <CardActions >
+
+                            <NotePropComponent noteId={keys.id} AllNotesComponent={this.handleprops} sendarchiveprop={this.handlearchiveprops} />
                         </CardActions>
 
                     </Card >
-                    </div>
                     <Dialog open={this.state.openDialog} >
                         < Card className="note-dialog" style={{ backgroundColor: keys.color, boxShadow: "1px 1px 1px 1px" }
                         } >

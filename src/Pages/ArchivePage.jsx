@@ -8,7 +8,7 @@ export default class ArchivePage extends Component {
         this.state = {
     
           view: false,
-    
+          
     
     
         }
@@ -21,8 +21,8 @@ export default class ArchivePage extends Component {
     render() {
         return (
             <div className="dashboard-body">
-                 <AppbarComponent viewprop={this.handleView}/>
-                <ArchiveComponent viewprop={this.state.view} />
+                 <AppbarComponent viewprop={this.handleView} />
+                <ArchiveComponent viewprop={this.state.view}   />
             </div>
         )
     }

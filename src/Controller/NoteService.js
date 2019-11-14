@@ -90,7 +90,7 @@ export function addCollaborator(email,noteid){
 export function search(data){
     console.log(data)
     
-return Axios.get(user_api_base_url+'note/search?title='+data,null,{headers:headers});
+return Axios.get(user_api_base_url+'note/search?title='+data,{headers:headers});
 }
 export function deleteCollaborator(userid,noteid){
     console.log(userid)

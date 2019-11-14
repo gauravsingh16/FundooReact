@@ -15,6 +15,7 @@ import LabelPage from './Pages/LabelPage'
 import LabelNotesComponent from  './Components/LabelNotesComponent'
 import ReminderPage from './Pages/ReminderPage'
 import VerifyUserComponent from './Components/VerifyUserComponent'
+import SearchPage from './Pages/SearchPage'
 
 class App extends Component{
   render(){
@@ -34,6 +35,7 @@ class App extends Component{
       <Route path="/label/:labelid" exact component={LabelPage}/>
       <Route path="/reminder" exact component={ReminderPage}/>
       <Route path="/verify/:token"exact component={VerifyUserComponent}/>
+      <Route path="/search" exact component={SearchPage}/>
       </Router>
     
     )

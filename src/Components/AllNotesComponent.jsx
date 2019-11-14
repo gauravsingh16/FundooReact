@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Card, CardContent, TextField, CardActions, Button, Dialog,Chip, Checkbox } from '@material-ui/core'
-import { getAllNotes, updateNotes, removeReminder, doPin } from '../Controller/NoteService';
+import { getAllNotes, updateNotes, removeReminder, doPin, deleteCollaborator } from '../Controller/NoteService';
 import NotePropComponent from './NotePropComponent';
 import { removelabelnote } from '../Controller/labelservice';
 import AccessTimeIcon from '@material-ui/icons/AccessTime'
@@ -14,11 +14,14 @@ export default class AllNotesComponent extends Component {
             desc: '',
             notes: [],
             openDialog: false,
+            proper:false
         }
 
     };
     componentDidMount() {
         this.getNotes();
+       
+        this.handlenoteprops();
     }
     getNotes = () => {
         getAllNotes().then((res) => {
@@ -75,6 +78,7 @@ export default class AllNotesComponent extends Component {
             console.log(response)
             this.getNotes();
         })
+        
     }
     handleReminderDelete=(noteId)=>{
         removeReminder(noteId).then((response)=>{
@@ -85,10 +89,47 @@ export default class AllNotesComponent extends Component {
     handlecheckbox=(noteId)=>{
         doPin(noteId).then((response)=>{
             console.log(response)
+            this.props.sendDashboard(true);
+            this.getNotes();
         })
     }
+    handleCollabaratedDelete=(noteId,userId)=>{
+        deleteCollaborator(userId,noteId).then((resp)=>{
+            console.log(resp) 
+            this.getNotes();
+
+        })
+    }
+    handleprops=(data)=>{
+        console.log(data)
+        if(data){
+            this.getNotes();
+        }
+        this.setState({
+            proper:data
+        })
+    }
+    handlearchiveprops=(data)=>{
+        console.log(data)
+        if(data){
+            this.getNotes();
+        }
+        this.setState({
+            proper:data
+        })
+    }
+    handlenoteprops=()=>{
+        if(this.props.AllComponent)
+        {
+            console.log(this.props.AllComponent)
+            this.getNotes();
+        }
+        this.getNotes();
+    }
+    
     render() {
-        let getAllNotes = this.state.notes.map((keys) => {
+     
+       let getAllNotes = this.state.notes.map((keys) => {
             const cardView = this.props.viewprop ? "list-view" : "display-card"
             return (
                 < div key={keys.id}   >
@@ -124,11 +165,18 @@ export default class AllNotesComponent extends Component {
                                
                             
                         </div>
+                        <div>
+                                    {keys.user.map((user) => {
+                                    return (<div key={user.userId}>{user === null ? '' :
+                                        <Chip label={user.email} variant="outlined" onDelete={() => {this.handleCollabaratedDelete(keys.noteId, user.userId)}} />}
+                                    </div>);
+                                })}
+                            </div>
                         </div>
                         
                         <CardActions >
 
-                            <NotePropComponent noteId={keys.id} />
+                            <NotePropComponent noteId={keys.id} AllNotesComponent={this.handleprops} sendarchiveprop={this.handlearchiveprops} />
                         </CardActions>
 
                     </Card >
@@ -151,7 +199,7 @@ export default class AllNotesComponent extends Component {
                                 /></CardContent>
                             <CardActions>
 
-                                <NotePropComponent noteId={keys.id} />
+                            <NotePropComponent noteId={keys.id} AllNotesComponent={this.handleprops} sendarchiveprop={this.handlearchiveprops} />
                                 <Button className="button-close" onClick={this.closeDialog}>Close</Button>
 
                             </CardActions>

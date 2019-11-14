@@ -51,12 +51,12 @@ export default class NotesComponent extends Component {
             }
             createNote(note).then((response) => {
                 console.log(response.data);
+                this.props.AllNotesComponent(true)
                 this.setState({
                     windowOpen: false,
                     title: '',
                     desc: ''
                 })
-
             }).catch((err) => {
                 console.log('err', err.response.data.message)
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Card, CardContent, TextField, CardActions, Button, Dialog, Chip } from '@material-ui/core'
-import { getAllNotes, updateNotes, removeReminder, getReminderNotes } from '../Controller/NoteService';
+import { getAllNotes, updateNotes, removeReminder, getReminderNotes, deleteCollaborator } from '../Controller/NoteService';
 import NotePropComponent from './NotePropComponent';
 import { removelabelnote } from '../Controller/labelservice';
 export default class ReminderNoteComponent extends Component {
@@ -80,6 +80,22 @@ export default class ReminderNoteComponent extends Component {
             console.log(response);
             this.getNotes();
         })
+    }   
+     handleprops=(data)=>{
+        console.log(data)
+        if(data){
+            this.getNotes();
+        }
+        this.setState({
+            proper:data
+        })
+    }
+    handleCollabaratedDelete=(noteId,userId)=>{
+        deleteCollaborator(userId,noteId).then((resp)=>{
+            console.log(resp) 
+            this.getNotes();
+
+        })
     }
     render() {
         let getAllReminderNotes = this.state.notes.map((keys) => {
@@ -116,6 +132,13 @@ export default class ReminderNoteComponent extends Component {
                                     />
                                 }
                                 </div>
+                                <div>
+                                    {keys.user.map((user) => {
+                                    return (<div key={user.userId}>{user === null ? '' :
+                                        <Chip label={user.email} variant="outlined" onDelete={() => {this.handleCollabaratedDelete(keys.noteId, user.userId)}} />}
+                                    </div>);
+                                })}
+                            </div>
 
 
                             </div>
@@ -123,7 +146,7 @@ export default class ReminderNoteComponent extends Component {
 
                         <CardActions  >
 
-                            <NotePropComponent noteId={keys.id} />
+                        <NotePropComponent noteId={keys.id} AllNotesComponent={this.handleprops} sendarchiveprop={this.handlearchiveprops} />
                         </CardActions>
 
                     </Card >
@@ -146,7 +169,7 @@ export default class ReminderNoteComponent extends Component {
                                 /></CardContent>
                             <CardActions>
 
-                                <NotePropComponent noteId={keys.id} />
+                            <NotePropComponent noteId={keys.id} AllNotesComponent={this.handleprops} sendarchiveprop={this.handlearchiveprops} />
                                 <Button className="button-close" onClick={this.closeDialog}>Close</Button>
 
                             </CardActions>

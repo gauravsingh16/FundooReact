@@ -35,3 +35,8 @@ export function deleteLabel(labelid){
     console.log(labelid);
     return Axios.delete(user_api_base_url+'label/deletelabel?labelid='+labelid,{headers:headers});
 }
+export function labelCreateOnNote(noteid,label){
+    console.log(noteid);
+    console.log(label);
+    return Axios.post(user_api_base_url+'label/createlabel?id='+noteid,label,{headers:headers});
+}

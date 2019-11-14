@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, CardContent, TextField, CardActions, Button, IconButton, Dialog } from '@material-ui/core'
+import { Card, CardContent, TextField, CardActions, Button, IconButton, Dialog,Chip } from '@material-ui/core'
 import { getTrashNote, deleteNote, trashNotes } from '../Controller/NoteService';
 import RestoreFromTrashIcon from '@material-ui/icons/RestoreFromTrash';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
@@ -64,10 +64,12 @@ export default class TrashComponent extends Component {
     deleteforever = (note) => {
         deleteNote(note.id).then((response) => {
             console.log(response);
-            this.getNotes();
+            this.props.DeletePage(true)
             this.setState({
+
                 dialogOpen:!this.state.dialogOpen
             })
+            this.getNotes();
         }
         )
     }
@@ -87,6 +89,33 @@ export default class TrashComponent extends Component {
                                 {keys.desc}
                             </CardContent>
                         </div>
+                        <div >
+                                {keys.label.map((labels) => {
+                                    return (
+                                        <div key={labels.labelId}> {labels === '' ? ' ' :
+                                            <Chip className="labelsinnote" label={labels.name} variant="outlined"
+                                                onDelete={() => { this.handleLabelDelete(labels, keys.noteId) }}
+                                            />
+                                        }
+                                        </div>
+                                    )
+
+                                })}
+                            </div>
+                            
+                                <div key={keys.reminder}>  {keys.reminder === null ? null :
+                                    <Chip className="labelsinnote" label={keys.reminder} variant="outlined"
+                                        onDelete={() => { this.handleReminderDelete(keys.noteId) }}
+                                    />
+                                }
+                                </div>
+                                <div>
+                                    {keys.user.map((user) => {
+                                    return (<div key={user.userId}>{user === null ? '' :
+                                        <Chip label={user.email} variant="outlined" onDelete={() => {this.handleCollabaratedDelete(keys.noteId, user.userId)}} />}
+                                    </div>);
+                                })}
+                            </div>
                         <CardActions  >
                             <IconButton title="Restore" onClick={() => { this.restorenote(keys) }}>
                                 <RestoreFromTrashIcon />
@@ -133,7 +162,7 @@ export default class TrashComponent extends Component {
                             <span> Delete Note Forever?</span><br/>
                             {/* <NotePropComponent noteId={keys.id}/> */}
                             <Button className="delete-button" onClick={this.closeopendialog}>Close</Button>
-                            <Button className="delete-button" onClick={this.deleteforever((keys))}>Delete</Button>
+                            <Button className="delete-button" onClick={()=>this.deleteforever(keys)}>Delete</Button>
 
 
                         </Card >

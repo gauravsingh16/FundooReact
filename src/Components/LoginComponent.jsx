@@ -51,6 +51,7 @@ export default class LoginComponent extends Component {
                     localStorage.setItem('email',res.data.object.email);
                     this.props.history.push('/dashboard')
             }else{
+               
                 this.props.history.push('/login')
                 }
             }).catch((err) => {

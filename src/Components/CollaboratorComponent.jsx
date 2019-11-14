@@ -73,6 +73,7 @@ export default class CollaboratorComponent extends Component {
             view: !this.state.view,
             open: !this.state.open
         })
+        this.props.NotePropComponent(true);
     }
     snackBarClose = () => {
         this.setState({
@@ -92,6 +93,7 @@ export default class CollaboratorComponent extends Component {
     }
     saveColab = () => {
         if (!/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/.test(this.state.email)) {
+            
             this.setState({
 
                 Error: true,
@@ -101,7 +103,7 @@ export default class CollaboratorComponent extends Component {
         
         console.log(this.state.notes)
         addCollaborator(this.state.email, this.props.noteId).then((res) => {
-            console.log(res.data.object);
+            console.log(res);
             this.setState({
                 chipOpen: !this.state.open,
                 
@@ -183,7 +185,7 @@ export default class CollaboratorComponent extends Component {
                         <Button onClick={this.dialogReset} >
                             Cancel
 </Button>
-                        <Button onClick={this.saveColab} >
+                        <Button onClick={this.dialogReset} >
                             Save
 </Button>
                     </DialogActions>
