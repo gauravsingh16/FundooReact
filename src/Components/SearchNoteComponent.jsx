@@ -17,13 +17,13 @@ export default class SearchNoteComponent extends Component {
 
     };
     componentDidMount() {
-        
-        this.getNotes();
+      this.setState({
+        notes:this.props.sendsearchnotes
+    }) 
+    console.log(this.props.sendsearchnotes)
     }
     getNotes = () => {
-        this.setState({
-            notes:this.props.searchnotes
-        });
+        
             console.log('data', this.state.notes)
         }
         
@@ -68,7 +68,8 @@ export default class SearchNoteComponent extends Component {
         }
     }
     render() {
-        let getSearchedNotes = this.props.searchnotes.map((keys) => {
+        if(this.props.sendsearchnotes)
+        {let getSearchedNotes = this.props.sendsearchnotes.map((keys) => {
             const cardView = this.props.viewprop ? "list-view" : "display-card"
             return (
 
@@ -84,7 +85,7 @@ export default class SearchNoteComponent extends Component {
                                 </CardContent>
                             </div>
                     
-                        <div >
+                        {/* <div >
                             {keys.label.map((labels) => {
                                 return (
                                     <div key={labels.labelId}> {labels === '' ? null :
@@ -96,7 +97,7 @@ export default class SearchNoteComponent extends Component {
                                 )
 
                             })}
-                        </div>
+                        </div> */}
                         <div>
                             <div key={keys.reminder}>  {keys.reminder === null ? null :
                                 <Chip icon={<AccessTimeIcon/>}className="labelsinnote" label={keys.reminder} variant="outlined"
@@ -149,5 +150,5 @@ export default class SearchNoteComponent extends Component {
                 {getSearchedNotes}
             </div>
         )
-    }
+    }}
 }

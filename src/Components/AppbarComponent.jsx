@@ -66,9 +66,10 @@ class AppbarComponent extends Component {
             this.setState({
                 searchNotes:resp.data.object
             })
+            this.props.searchnotes(this.state.searchNotes);  
             console.log(this.state.searchNotes)
-          this.props.searchnotes(this.state.searchNotes)  
         })
+      
     }
     handleView = () => {
         this.setState({
@@ -84,6 +85,9 @@ class AppbarComponent extends Component {
     }
     handlerefresh =()=>{
         window.location.reload();
+    }
+    handlesearchpage=()=>{
+        this.props.history.push('/search');
     }
     render() {
         return (
@@ -109,7 +113,7 @@ class AppbarComponent extends Component {
                                 placeholder="Search....."
                                 value={this.state.search}
                                 onChange={this.searchtext}
-
+                                onClick={this.handlesearchpage}
                             />
                             <IconButton>
                                 <ClearIcon />

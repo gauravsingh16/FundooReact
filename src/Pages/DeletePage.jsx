@@ -21,7 +21,7 @@ export default class DeletePage extends Component {
     render() {
         return (
             <div className="dashboard-body">
-                <AppbarComponent  viewprop={this.handleView}/>
+                <AppbarComponent  viewprop={this.handleView} />
                 <TrashComponent viewprop={this.state.view}/>
             </div>
         )

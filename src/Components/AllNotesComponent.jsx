@@ -123,7 +123,13 @@ export default class AllNotesComponent extends Component {
         {
             console.log(this.props.AllComponent)
             this.getNotes();
+        }else if(this.props.receiveResponse){
+            this.getNotes()
         }
+        this.getNotes();
+    }
+    archieveNote=(value)=>{
+        if(value===true)
         this.getNotes();
     }
     
@@ -176,7 +182,7 @@ export default class AllNotesComponent extends Component {
                         
                         <CardActions >
 
-                            <NotePropComponent noteId={keys.id} AllNotesComponent={this.handleprops} sendarchiveprop={this.handlearchiveprops} />
+                            <NotePropComponent noteId={keys.id} AllNotesComponent={this.handleprops} sendarchiveprop={this.handlearchiveprops} notePropToArchieve={this.archieveNote}/>
                         </CardActions>
 
                     </Card >
@@ -211,6 +217,7 @@ export default class AllNotesComponent extends Component {
         return (
             <div className="note-design">
                 {getAllNotes}
+                {this.props.receiveResponse === true ?  '': this.getNotes() }
             </div>
         )
     }

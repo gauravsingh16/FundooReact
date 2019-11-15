@@ -32,7 +32,9 @@ import CollaboratorComponent from './CollaboratorComponent';
             labelmenu:false,
             archive:false,
             noteId:this.props.noteId,
-            default:true
+            default:true,
+            unArchieve: false,
+           
         }
 
     }
@@ -75,7 +77,13 @@ import CollaboratorComponent from './CollaboratorComponent';
         archiveNote(this.props.noteId).then((response)=>
         {
             console.log(response)
-            this.props.AllNotesComponent(true);
+            this.setState({
+               
+                unArchieve : true
+                // anchorEl:!this.state.anchorEl
+            });
+            
+            this.props.notePropToArchieve(this.state.unArchieve);
             
         }
         )
@@ -84,9 +92,11 @@ import CollaboratorComponent from './CollaboratorComponent';
         console.log(data);
         this.setState({
             default:data,
+            
             // anchorEl:!this.state.anchorEl
         });
-        this.props.AllNotesComponent(this.state.default);
+        
+        
     }
 
     render() {
@@ -111,7 +121,7 @@ import CollaboratorComponent from './CollaboratorComponent';
                    <ColorChangeComponent noteId={this.props.noteId} NotePropComponent={this.propfrom}/>
                 </IconButton>
                 <IconButton>
-                    <ArchiveIcon onClick={this.handleArchive}  NotePropComponent={this.propfrom} />
+                    <ArchiveIcon onClick={this.handleArchive} />
                 </IconButton>
                 <IconButton title="more" >
                     <MoreVertIcon onClick={(e) => this.handleMoreOpen(e)} />

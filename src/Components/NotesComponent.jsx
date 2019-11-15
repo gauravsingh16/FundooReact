@@ -12,6 +12,7 @@ export default class NotesComponent extends Component {
             title: '',
             desc: '',
             windowOpen: false,
+            sendNote:false,
         }
     }
     handleClick = () => {
@@ -39,7 +40,7 @@ export default class NotesComponent extends Component {
                 windowOpen: false,
             })
         }
-        else {
+        else if(this.state.title === "" && this.state.desc !== "" ){
             this.setState({
 
                 title: '',
@@ -51,12 +52,38 @@ export default class NotesComponent extends Component {
             }
             createNote(note).then((response) => {
                 console.log(response.data);
-                this.props.AllNotesComponent(true)
+               
                 this.setState({
                     windowOpen: false,
                     title: '',
-                    desc: ''
+                    desc: '',
+                    sendNote : true,
                 })
+                this.props.sendResponse(this.state.sendNote)
+            }).catch((err) => {
+                console.log('err', err.response.data.message)
+
+            });
+        }else{
+            this.setState({
+
+                title: '',
+                desc:''
+            })
+            let note = {
+                title: this.state.title,
+                desc: this.state.desc
+            }
+            createNote(note).then((response) => {
+                console.log(response.data);
+               
+                this.setState({
+                    windowOpen: false,
+                    title: '',
+                    desc: '',
+                    sendNote : true,
+                })
+                this.props.sendResponse(this.state.sendNote)
             }).catch((err) => {
                 console.log('err', err.response.data.message)
 

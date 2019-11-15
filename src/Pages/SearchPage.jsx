@@ -14,9 +14,10 @@ export default class SearchPage extends Component {
     
         }
       }
-      searchnotes = (e) => {
+      handlesearchnotes = (data) => {
+        console.log(data)
         this.setState({
-          notes: this.state.notes
+          notes: data
         })
         console.log(this.state.notes);
         
@@ -24,8 +25,8 @@ export default class SearchPage extends Component {
     render() {
         return (
             <div>
-                <AppbarComponent searchnotes={this.searchnotes}/>
-                <SearchNoteComponent searchnotes={this.state.notes}/>
+                <AppbarComponent searchnotes={this.handlesearchnotes}/>
+                <SearchNoteComponent sendsearchnotes={this.state.notes}/>
             </div>
         )
     }

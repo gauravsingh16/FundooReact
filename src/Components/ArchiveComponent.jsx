@@ -15,6 +15,7 @@ export default class ArchiveComponent extends Component {
             desc: '',
             notes: [],
             openDialog: false,
+            
         }
 
     };
@@ -97,6 +98,11 @@ export default class ArchiveComponent extends Component {
 
         })
     }
+    handelRemove=(value)=>{
+        console.log('Archieve componnet',value)
+        if(value===true)
+        this.getNotes()
+    }
     render() {
         let getArchiveNotes = this.state.notes.map((keys) => {
             const cardView = this.props.viewprop ? "list-view" : "display-card"
@@ -145,7 +151,7 @@ export default class ArchiveComponent extends Component {
 
                         <CardActions >
 
-                            <NotePropComponent noteId={keys.id} AllNotesComponent={this.handleprops} sendarchiveprop={this.handlearchiveprops} />
+                            <NotePropComponent noteId={keys.id} AllNotesComponent={this.handleprops} sendarchiveprop={this.handlearchiveprops}  notePropToArchieve={this.handelRemove}/>
                         </CardActions>
 
                     </Card >
@@ -182,6 +188,7 @@ export default class ArchiveComponent extends Component {
         return (
             <div className="note-design">
                 {getArchiveNotes}
+                {/* {this.props.notePropToArchieve === true ? this.getNotes() : ''} */}
             </div>
         )
     }

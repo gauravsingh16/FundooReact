@@ -34,9 +34,9 @@ export default class Dashboard extends Component {
 
         <body className="dashboard-body">
           <AppbarComponent viewprop={this.handleView}  />
-          <NotesComponent AllNotesComponent={this.handleprops}/>
+          <NotesComponent sendResponse={this.handleprops}/>
           <PinnedNoteComponent className="pin-notes" sendDashboard={this.handleprops} />
-          <AllNotesComponent viewprop={this.state.view} AllComponent={this.state.default}/>
+          <AllNotesComponent viewprop={this.state.view} receiveResponse={this.state.default}/>
         </body>
       </div>
     )
