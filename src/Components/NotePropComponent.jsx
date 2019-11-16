@@ -93,9 +93,9 @@ import CollaboratorComponent from './CollaboratorComponent';
         this.setState({
             default:data,
             
-            // anchorEl:!this.state.anchorEl
+            //  anchorEl:!this.state.anchorEl
         });
-        
+        this.props.AllNotesComponent(true)
         
     }
 

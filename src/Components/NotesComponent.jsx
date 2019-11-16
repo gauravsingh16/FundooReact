@@ -83,7 +83,7 @@ export default class NotesComponent extends Component {
                     desc: '',
                     sendNote : true,
                 })
-                this.props.sendResponse(this.state.sendNote)
+                 this.props.sendResponse(this.state.sendNote)
             }).catch((err) => {
                 console.log('err', err.response.data.message)
 

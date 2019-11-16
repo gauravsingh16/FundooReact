@@ -100,8 +100,10 @@ export default class ArchiveComponent extends Component {
     }
     handelRemove=(value)=>{
         console.log('Archieve componnet',value)
-        if(value===true)
-        this.getNotes()
+        if(value)
+        {
+            this.getNotes();
+        }
     }
     render() {
         let getArchiveNotes = this.state.notes.map((keys) => {

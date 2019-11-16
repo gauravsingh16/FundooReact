@@ -20,8 +20,14 @@ export default class AllNotesComponent extends Component {
     };
     componentDidMount() {
         this.getNotes();
-       
-        this.handlenoteprops();
+       this.handlenoteprops();
+        
+    }
+    componentWillReceiveProps(){
+        if(this.props.receiveResponse)
+        {   console.log(this.props.receiveResponse)
+            this.getNotes();
+        }
     }
     getNotes = () => {
         getAllNotes().then((res) => {
@@ -31,7 +37,7 @@ export default class AllNotesComponent extends Component {
             })
             console.log('data', this.state.notes)
         }
-        )
+        );
     }
     handleTitleChange = (event) => {
         this.setState({
@@ -102,6 +108,7 @@ export default class AllNotesComponent extends Component {
     }
     handleprops=(data)=>{
         console.log(data)
+        console.log(this.props.NotePropComponent)
         if(data){
             this.getNotes();
         }
@@ -139,16 +146,17 @@ export default class AllNotesComponent extends Component {
             const cardView = this.props.viewprop ? "list-view" : "display-card"
             return (
                 < div key={keys.id}   >
+                    
                     < Card key={keys.id} className={cardView} style={{backgroundColor:keys.color}} >
-                        <div onClick={() => { this.handleClickTakeNote(keys) }} >
-                            <CardContent>
+                        <div onClick={() => { this.handleClickTakeNote(keys) }}  >
+                            <CardContent >
                                 {keys.title}
                                 <Checkbox style={{display:"flex",float:"right"}} onClick={() => { this.handlecheckbox(keys.noteId) }} />
                             </CardContent>
                             <CardContent>
                                 {keys.desc}
                             </CardContent>
-                            <div >
+                            <div  className="labelsinnotes" >
                             {keys.label.map((labels) => {
                                 return (
                                     <div key={labels.labelId}> {labels === '' ? null :
@@ -161,7 +169,7 @@ export default class AllNotesComponent extends Component {
 
                             })}
                         </div>
-                       <div>                     
+                       <div className="labelsinnotes" >                     
                                     <div key={keys.reminder}>  {keys.reminder === null ? null :
                                         <Chip icon={<AccessTimeIcon/>}className="labelsinnote" label={keys.reminder} variant="outlined"
                                             onDelete={()=>{this.handleReminderDelete(keys.noteId)}}
@@ -171,7 +179,7 @@ export default class AllNotesComponent extends Component {
                                
                             
                         </div>
-                        <div>
+                        <div className="labelsinnotes" >
                                     {keys.user.map((user) => {
                                     return (<div key={user.userId}>{user === null ? '' :
                                         <Chip label={user.email} variant="outlined" onDelete={() => {this.handleCollabaratedDelete(keys.noteId, user.userId)}} />}
@@ -182,12 +190,12 @@ export default class AllNotesComponent extends Component {
                         
                         <CardActions >
 
-                            <NotePropComponent noteId={keys.id} AllNotesComponent={this.handleprops} sendarchiveprop={this.handlearchiveprops} notePropToArchieve={this.archieveNote}/>
+                            <NotePropComponent noteId={keys.id} AllNotesComponent={this.handleprops} sendarchiveprop={this.handlearchiveprops} notePropToArchieve={this.archieveNote} NotePropComponent={this.props} />
                         </CardActions>
 
                     </Card >
-                    <Dialog open={this.state.openDialog}  >
-                        < Card className="note-dialog" style={{ backgroundColor:keys.color,boxShadow: "1px 1px 1px 1px" }
+                    <Dialog open={this.state.openDialog} >
+                        < Card className="note-dialog" style={{ boxShadow: "1px 1px 1px 1px" , backgroundColor:keys.color}
                         } >
                             <CardContent>
                                 <TextField style={{ width: "100%" }}
@@ -217,7 +225,7 @@ export default class AllNotesComponent extends Component {
         return (
             <div className="note-design">
                 {getAllNotes}
-                {this.props.receiveResponse === true ?  '': this.getNotes() }
+                {/* {this.props.AllNotesComponent?'':this.getNotes()} */}
             </div>
         )
     }

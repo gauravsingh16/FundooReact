@@ -68,7 +68,7 @@ export default class SearchNoteComponent extends Component {
         }
     }
     render() {
-        if(this.props.sendsearchnotes)
+        if(this.props.sendsearchnotes !== null)
         {let getSearchedNotes = this.props.sendsearchnotes.map((keys) => {
             const cardView = this.props.viewprop ? "list-view" : "display-card"
             return (

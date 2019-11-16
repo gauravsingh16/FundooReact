@@ -25,7 +25,15 @@ export default class Dashboard extends Component {
       default:data
       
     })
+    // this.props.AllNotesComponent(data)
     console.log(this.state.default)
+  }
+  handleresponse=(data)=>
+  {
+    this.setState({
+      default:data
+    });
+    this.props.receiveResponse(data)
   }
   render() {
     console.log(this.state.view)
@@ -36,7 +44,7 @@ export default class Dashboard extends Component {
           <AppbarComponent viewprop={this.handleView}  />
           <NotesComponent sendResponse={this.handleprops}/>
           <PinnedNoteComponent className="pin-notes" sendDashboard={this.handleprops} />
-          <AllNotesComponent viewprop={this.state.view} receiveResponse={this.state.default}/>
+          <AllNotesComponent viewprop={this.state.view} receiveResponse={this.state.default} />
         </body>
       </div>
     )

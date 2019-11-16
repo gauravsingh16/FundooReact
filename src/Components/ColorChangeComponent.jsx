@@ -79,7 +79,7 @@ export default class ColourChange extends Component {
 
         return (
             <div>
-                <Tooltip title="change color">
+                <Tooltip title="Color">
                     <ColorLensOutlinedIcon onClick={(event) => this.handleClick(event)} cursor="pointer" />
                 </Tooltip>
                 
