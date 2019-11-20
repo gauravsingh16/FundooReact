@@ -65,7 +65,8 @@ console.log(this.state.name);
     handleDeleteLabel=(event)=>{
         deleteLabel(event).then((response)=>{
             console.log(response)
-        })
+        });
+        this.getLabels();
     }
     render() {
         let showLabelsinDialog = this.state.labels.map((key) => {

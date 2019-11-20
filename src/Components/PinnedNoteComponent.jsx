@@ -21,6 +21,10 @@ export default class PinnedNoteComponent extends Component {
     componentDidMount() {
         this.getNotes();
     }
+    componentWillReceiveProps(){
+        if(this.props.sendToPin)
+        this.getNotes();
+    }
     getNotes = () => {
         getPinNotes().then((res) => {
             console.log("in getNotes ", res.data);
@@ -91,6 +95,17 @@ export default class PinnedNoteComponent extends Component {
         doPin(noteId).then((response)=>{
             console.log(response)
         })
+        window.location.reload();
+    }
+    handleprops=(data)=>{
+        console.log(data)
+        console.log(this.props.NotePropComponent)
+        if(data){
+            this.getNotes();
+        }
+        this.setState({
+            proper:data
+        })
     }
     handleChangepin=(event)=>{
         
@@ -99,16 +114,18 @@ export default class PinnedNoteComponent extends Component {
             let getAllNotes = this.state.notes.map((keys) => {
                 return (
                     < div key={keys.id}   >
-                        < Card key={keys.id} className="note-display" style={{backgroundColor:keys.color}} >
+                        < Card key={keys.id} className="display-card" style={{backgroundColor:keys.color}} >
+                        <Checkbox style={{display:"flex",float:"right"}}  checked={this.state.pinned}           onChange={this.handleChangepin('pinned')} onClick={() => { this.handlecheckbox(keys.noteId) }} />
+
                             <div onClick={() => { this.handleClickTakeNote(keys) }}>
                                 <CardContent>
                                     {keys.title}
-                                    <Checkbox style={{display:"flex",float:"right"}}  checked={this.state.pinned}
-                         onChange={this.handleChangepin('pinned')} onClick={() => { this.handlecheckbox(keys.noteId) }} />
+                                   
                                 </CardContent>
                                 <CardContent>
                                     {keys.desc}
                                 </CardContent>
+                                </div>
                                 <div >
                                 {keys.label.map((labels) => {
                                     return (
@@ -121,7 +138,7 @@ export default class PinnedNoteComponent extends Component {
                                     )
     
                                 })}
-                            </div>
+                          
                            <div>                     
                                         <div key={keys.reminder}>  {keys.reminder === null ? null :
                                             <Chip className="labelsinnote" label={keys.reminder} variant="outlined"
@@ -136,7 +153,7 @@ export default class PinnedNoteComponent extends Component {
                             
                             <CardActions >
     
-                                <NotePropComponent noteId={keys.id} />
+                                <NotePropComponent noteId={keys.id}  AllNotesComponent={this.handleprops} sendarchiveprop={this.handlearchiveprops} notePropToArchieve={this.archieveNote} NotePropComponent={this.props}/>
                             </CardActions>
     
                         </Card >

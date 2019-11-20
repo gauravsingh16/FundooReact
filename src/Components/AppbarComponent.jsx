@@ -89,6 +89,9 @@ class AppbarComponent extends Component {
     handlesearchpage=()=>{
         this.props.history.push('/search');
     }
+    handleprofile=()=>{
+        this.props.history.push('/profile')
+    }
     render() {
         return (
             <div className="app-bar">
@@ -140,7 +143,7 @@ class AppbarComponent extends Component {
                         }}>
 
                             <Paper style={{ display: "flex", flexDirection: "column" }}>
-                                <Button>Profile</Button>
+                                <Button onClick={this.handleprofile}>Profile</Button>
                                 <Button onClick={this.handlelogout}>LogOut</Button>
 
                             </Paper>

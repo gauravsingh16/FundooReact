@@ -24,8 +24,13 @@ export default class AllNotesComponent extends Component {
         
     }
     componentWillReceiveProps(){
-        if(this.props.receiveResponse)
-        {   console.log(this.props.receiveResponse)
+        // if(this.props.receiveResponse)
+        // {   console.log(this.props.receiveResponse)
+        //     this.getNotes();
+        // }
+         if(this.props.sendToAllNotes)
+        {
+            console.log(this.props.sendToAllNotes)
             this.getNotes();
         }
     }
@@ -95,8 +100,8 @@ export default class AllNotesComponent extends Component {
     handlecheckbox=(noteId)=>{
         doPin(noteId).then((response)=>{
             console.log(response)
-            this.props.sendDashboard(true);
             this.getNotes();
+            this.props.sendDashboard(true);
         })
     }
     handleCollabaratedDelete=(noteId,userId)=>{
@@ -148,14 +153,16 @@ export default class AllNotesComponent extends Component {
                 < div key={keys.id}   >
                     
                     < Card key={keys.id} className={cardView} style={{backgroundColor:keys.color}} >
+                    <Checkbox style={{display:"flex",float:"right"}} onClick={() => { this.handlecheckbox(keys.noteId) }} />
                         <div onClick={() => { this.handleClickTakeNote(keys) }}  >
                             <CardContent >
                                 {keys.title}
-                                <Checkbox style={{display:"flex",float:"right"}} onClick={() => { this.handlecheckbox(keys.noteId) }} />
+                               
                             </CardContent>
                             <CardContent>
                                 {keys.desc}
                             </CardContent>
+                            </div>
                             <div  className="labelsinnotes" >
                             {keys.label.map((labels) => {
                                 return (
@@ -168,7 +175,7 @@ export default class AllNotesComponent extends Component {
                                 )
 
                             })}
-                        </div>
+                       
                        <div className="labelsinnotes" >                     
                                     <div key={keys.reminder}>  {keys.reminder === null ? null :
                                         <Chip icon={<AccessTimeIcon/>}className="labelsinnote" label={keys.reminder} variant="outlined"

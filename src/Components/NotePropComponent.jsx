@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { IconButton, Paper } from '@material-ui/core'
+import { IconButton, Paper, SnackbarContent,Snackbar } from '@material-ui/core'
 import AddAlertIcon from '@material-ui/icons/AddAlert';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import PaletteIcon from '@material-ui/icons/Palette';
@@ -34,6 +34,8 @@ import CollaboratorComponent from './CollaboratorComponent';
             noteId:this.props.noteId,
             default:true,
             unArchieve: false,
+            snackbarOpen:false,
+            SnackBarMessage:''
            
         }
 
@@ -92,11 +94,18 @@ import CollaboratorComponent from './CollaboratorComponent';
         console.log(data);
         this.setState({
             default:data,
-            
+            snackbarOpen:true,
+               SnackBarMessage:"Moved"
             //  anchorEl:!this.state.anchorEl
         });
         this.props.AllNotesComponent(true)
-        
+        if(data)
+        {
+           this.setState({
+               snackbarOpen:true,
+               SnackBarMessage:"Moved"
+           }) 
+        }
     }
 
     render() {
@@ -137,7 +146,20 @@ import CollaboratorComponent from './CollaboratorComponent';
                         <AddNoteLabelComponent noteId={this.props.noteId }  NotePropComponent={this.propfrom} />
                     </Paper>
                 </Popper>
-                
+                <Snackbar
+            anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center',
+            }}
+            open={this.state.openSnackBar}
+            autoHideDuration={6000}
+            onClose={this.handleClose}
+            message={<span id="message-id">{this.state.SnackBarMessage}</span>}
+            action={[
+                <IconButton
+                    onClick={this.handleClose}>
+                </IconButton>
+            ]} ></Snackbar>
 
             </div>
         )

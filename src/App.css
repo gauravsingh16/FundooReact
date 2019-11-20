@@ -10,7 +10,7 @@
   background-color: #282c34;
   
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
@@ -23,19 +23,17 @@
 
 .register-card
 {
-  align-items: center;
+ width: 200px;
   display: flex;
-  
-  flex-direction: column;
+  padding-left: 400px;
+  flex-wrap: wrap;
+  justify-content: center;
 }
-.input
+.imageupload
 {
-  margin-bottom: px;
+  display:flex; flex-direction:row;
 }
-.register-button
-{
-  margin-top: 0px;
-}
+
 .login-card
 {
   align-items: center;
@@ -119,7 +117,7 @@ align-items: center;
 {
   flex-direction: row;
   flex-wrap:wrap; 
-  
+  padding-left: 200px;
   margin:0 10px 10px 60px;
   width: 250px;
 }

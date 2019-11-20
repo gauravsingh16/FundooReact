@@ -1,16 +1,17 @@
 import React, { Component } from 'react'
-import TextField from '@material-ui/core/TextField'
+import {InputBase} from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 
-import adduser from '../Controller/userservice.js';
+import adduser, { updateUser } from '../Controller/userservice.js';
 import {Snackbar,IconButton} from '@material-ui/core';
 import { Link } from 'react-router-dom';
-import ImageUpload from './ImageUpload.jsx';
-import {Input} from '@material-ui/core'
-class RegistrationComponent extends Component {
+import { UserProfile } from '../Controller/userservice';
+
+export default class ProfileComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            user:[],
             username: "",
             name: "",
             email: "",
@@ -20,19 +21,31 @@ class RegistrationComponent extends Component {
             errors:false,
             openSnackBar : false,
             pictures: [] ,
-            onDrop : this.onDrop.bind(this)
+            onDrop : this.onDrop.bind(this),
+            openForm:false
        }
+    }
+    componentDidMount(){
+        this.getUser();
+    }
+    getUser=()=>{
+        UserProfile().then((resp)=>{
+            console.log(resp);
+            this.setState({
+                user:resp.data.object
+            })
+            console.log(this.state.user)
+        })
     }
        onDrop=(picture)=> {
            this.setState({
                pictures: this.state.pictures.concat(picture),
            });
        }
-    onUsername = (event) => {
-        var username = event.target.value;
-
-        this.setState({ username: username })
-    }
+    // onUsername = (oldusername) => {
+    //     console.log(oldusername)
+    //     this.setState({ username: oldusername })
+    // }
     onName = (event) => {
         var name = event.target.value;
         this.setState({ name: name })
@@ -40,12 +53,11 @@ class RegistrationComponent extends Component {
     onEmail = (event) => {
         var email = event.target.value;
         this.setState({ email: email })
-        this.props.sendToRegister(email)
     }
-    onPassword = (event) => {
-        var password = event.target.value;
-        this.setState({ password: password })
-    }
+    // onPassword = (event) => {
+    //     var password = event.target.value;
+    //     this.setState({ password: password })
+    // }
     onAddress = (event) => {
         var address = event.target.value;
         this.setState({ address: address })
@@ -55,6 +67,11 @@ class RegistrationComponent extends Component {
         this.setState({ mobileno: mobileno })
         
     }
+    handleAll = (event) => {
+    this.setState({ [event.target.name]: event.target.value
+
+    })
+}
     
         onSubmit = (event) => {
         
@@ -98,7 +115,7 @@ class RegistrationComponent extends Component {
             }        
           else {
               console.log(this.state.mobileno)
-            adduser(user)
+            updateUser(user)
                 .then(res => {
                     console.log(res);
                     this.setState({
@@ -113,64 +130,112 @@ class RegistrationComponent extends Component {
         }
 
     }
-    
+    handlecancel=()=>{
+        this.props.history.push('/dashboard')
+    }
+    changeUserName=(e)=>{
+        this.setState({
+            username : e.target.value
+        })
+    }
 
+    edit=(key)=>{
+        console.log("hello",key.username)
+        this.setState({
+            username : key.username
+        })
+    }
+    changeData=(key)=>{
+this.setState({
+    username: key.username,
+    name: key.name,
+    email: key.email,
+   
+    mobileno: key.mobileno,
+    address: key.address,
+    openForm : true
+})
+    }
     render() {
+        let getUserValues=this.state.user.map((keys)=>{
+       
         return (
-           <div>
-
-              
+           <div key={keys.id}>            
                 <br/>
-           <div className="register-card">
-                    <span><b>REGISTRATION</b></span><br />
+           <div className="register-card" onClick={()=>this.changeData(keys)}>
+                    <span><b>Profile Details</b></span><br/>
+                    <br/>
+                Username
+                <br/>
+                {/* {keys.username} */}
+                {!this.state.openForm ?<div>  {keys.username} <br />
+                    {keys.name} <br />
+                    {keys.email} <br/>
+                    {keys.mobileno} <br />
+                    {keys.address} <br />
 
-                <TextField required
-                    label="Username"
+                </div> :<div> <InputBase required
+              
+                onChange={this.changeUserName}
                     value={this.state.username}
-                    onChange={this.onUsername}
+                  
                     className="input"
-                /><br />
-                <TextField required
-                    label="Name"
+                    name="username"
+                />
+                 <InputBase required
                     value={this.state.name}
                     onChange={this.onName}
                     className="input"
-                /><br />
-
-                <TextField required
-                    label="Email"
+                    name="name"
+                />
+                <InputBase required
                     onChange={this.onEmail}
                     value={this.state.email}
                     className="input"
-                /><br />
+                    name="email"
+                />
+                <InputBase required
+                    value={this.state.address}
+                    onChange={this.onAddress}
+                    className="input"
+                    name="address"
+                />
+                 <InputBase required
+                    value={this.state.mobileno}
+                    onChange={this.onMobile}
+                    className="input"
+                    name="mobileno"
+                />
+                
+                </div> }
+               
+                
+               
 
-                <TextField required
+               
+               
+
+                
+                
+
+                {/* <TextField required
                     label="Password"
-                    value={this.state.password}
+                    value={}
                     onChange={this.onPassword}
                     className="input"
                     type="password"
                     title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
-                /><span style={{color: "red"}}>{this.state.errors["password"]}</span><br />
-                <TextField required
-                    label="MobileNo"
-                    value={this.state.mobileno}
-                   
-                    onChange={this.onMobile}
-                    className="input"
-                /><span style={{color: "red"}}>{this.state.errors["mobile"]}</span><br/>
-
-                <TextField required
-                    label="Address"
-                    value={this.state.address}
-                    onChange={this.onAddress}
-                    className="input"
-                /><br />
+                /><span style={{color: "red"}}>{this.state.errors["password"]}</span><br /> */}
+               
+                <span style={{color: "red"}}>{this.state.errors["mobile"]}</span><br/>
+               
+                
+                <br />
                   
                 <Button variant="outlined" color="primary" className="register-button" onClick={this.onSubmit}>
-                    Register
-                   </Button><br/>
-                <Link to="/login">Already Registered?</Link>
+                    Save 
+                   </Button>
+                <Button variant="outlined" color="primary" onClick={this.handlecancel}>Cancel</Button>
             </div>
             {/* <ImageUpload/> */}
 
@@ -191,8 +256,15 @@ class RegistrationComponent extends Component {
         />
         </div>
         );
+    })
+
+    return(
+        <div>
+            {getUserValues}
+            </div>
+    )
     }
+    
+    
+   
 }
-export default RegistrationComponent;
-
-

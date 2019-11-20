@@ -9,7 +9,7 @@ export default class Dashboard extends Component {
     this.state = {
 
       view: false,
-      default:true
+      default:true,
 
 
     }
@@ -35,6 +35,12 @@ export default class Dashboard extends Component {
     });
     this.props.receiveResponse(data)
   }
+  handlepinprops=(data)=>{
+    console.log(data)
+    this.setState({
+      default:data
+    })
+  }
   render() {
     console.log(this.state.view)
     return (
@@ -43,8 +49,8 @@ export default class Dashboard extends Component {
         <body className="dashboard-body">
           <AppbarComponent viewprop={this.handleView}  />
           <NotesComponent sendResponse={this.handleprops}/>
-          <PinnedNoteComponent className="pin-notes" sendDashboard={this.handleprops} />
-          <AllNotesComponent viewprop={this.state.view} receiveResponse={this.state.default} />
+          <PinnedNoteComponent className="pin-notes" sendToPin={this.state.default} sendToDashboard={this.handlepinprops}/>
+          <AllNotesComponent viewprop={this.state.view} receiveResponse={this.state.default} sendDashboard={this.handlepinprops} sendToAllNotes={this.state.default} />
         </body>
       </div>
     )

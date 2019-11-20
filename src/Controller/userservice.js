@@ -1,4 +1,5 @@
 import Axios from "axios";
+import { func } from "prop-types";
 
 
 const user_api_base_url=process.env.REACT_APP_BASE_URL; 
@@ -27,6 +28,14 @@ export function verify(token){
         console.log(token)
         return Axios.get(user_api_base_url+'user/verify?token='+token,{headers:headers});
 }
+export function UserProfile(){
+        let email=localStorage.getItem('email')
+        return Axios.get(user_api_base_url+'user/getUser?email='+email,null);
+}
+export function updateUser(user){
+        return Axios.put(user_api_base_url+'user/updateUser',user,{headers:headers});
+}
+
 
 
 

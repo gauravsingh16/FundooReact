@@ -55,8 +55,8 @@ export default class CollaboratorComponent extends Component {
     }
     getUser = () => {
         getLoggedUser().then((res) => {
-            console.log(res.data.object);
-            console.log(res.data.email);
+            // console.log(res.data.object);
+            // console.log(res.data.email);
             
             this.setState({
                 notes:res.data.object,
